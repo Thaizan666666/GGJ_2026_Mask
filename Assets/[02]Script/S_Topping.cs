@@ -18,15 +18,15 @@ public class S_Topping : MonoBehaviour
     public void SetTopping(E_Topping _Topping) { 
         if (_Topping == E_Topping.Katsuobushi)
         {
-            Katsuobushi = true;
+            SetKatsuobushi();
         }
         else if (_Topping == E_Topping.Seaweed)
         {
-            Seaweed = true;
+            SetSeaweed();
         }
         else if (_Topping == E_Topping.Mayonnaise)
         {
-            Mayonnaise = true;
+            SetMayonnaise();
         }
     }
 

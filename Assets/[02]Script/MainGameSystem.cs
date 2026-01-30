@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MainGameSystem : MonoBehaviour
 {
-    [HideInInspector]
     public S_Topping target_Topping;
     public S_Topping Current_Topping;
     [Space(5)]
@@ -28,6 +27,32 @@ public class MainGameSystem : MonoBehaviour
     private int CustomerCount = 0;
     private int DuplicateCount = 0;
 
+    public void BTN_CheckOrder() {
+        CheckOrderMatch();
+    }
+
+    public bool CheckOrderMatch()
+    {
+        if (Current_Topping.Katsuobushi != target_Topping.Katsuobushi)
+        {
+            Debug.Log("Katsuobushi mismatch");
+            return false;
+        }
+        if (Current_Topping.Seaweed != target_Topping.Seaweed)
+        {
+            Debug.Log("Seaweed mismatch");
+            return false;
+        }
+        if (Current_Topping.Mayonnaise != target_Topping.Mayonnaise)
+        {
+            Debug.Log("Mayonnaise mismatch");
+            return false;
+        }
+
+        Debug.Log("Order matched");
+        return true;
+    }
+
     public void RandomTargetTopping() {
         Current_Topping.ResetTopping();
         int rand = Random.Range(1, 8);
@@ -35,22 +60,31 @@ public class MainGameSystem : MonoBehaviour
         {
             case 1:
                 target_Topping.Katsuobushi = true;
+                target_Topping.Seaweed = false;
+                target_Topping.Mayonnaise = false;
                 break;
             case 2:
+                target_Topping.Katsuobushi = false;
                 target_Topping.Seaweed = true;
+                target_Topping.Mayonnaise = false;
                 break;
             case 3:
+                target_Topping.Katsuobushi = false;
                 target_Topping.Mayonnaise = true;
+                target_Topping.Seaweed = false;
                 break;
             case 4:
                 target_Topping.Katsuobushi = true;
                 target_Topping.Seaweed = true;
+                target_Topping.Mayonnaise = false;
                 break;
             case 5:
                 target_Topping.Katsuobushi = true;
+                target_Topping.Seaweed = false;
                 target_Topping.Mayonnaise = true;
                 break;
             case 6:
+                target_Topping.Katsuobushi = false;
                 target_Topping.Seaweed = true;
                 target_Topping.Mayonnaise = true;
                 break;
@@ -173,6 +207,8 @@ public class MainGameSystem : MonoBehaviour
 
         CustomerCount++;
     }
+
+
 
     //method set apppearance according to customer type
 }
