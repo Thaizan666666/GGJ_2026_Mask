@@ -6,13 +6,22 @@ public class MainGameSystem : MonoBehaviour
     public S_Topping Current_Topping;
     [Space(5)]
 
+    //SO of Dialogue lines normal
+    //SO of Dialogue lines anamoly
+
+    //SO of Dialogue lines served correctly
+    //SO of Dialogue lines served incorrectly
+    //SO of Dialogue lines Getout!! 
+
     //Customer GameObject Parts
 
     //SO of Mask normal
     //SO of Mask Anamoly
 
-    //SO of Body normal
-    //SO of Body anamoly
+    //SO of Body Female normal
+    //SO of Body Male normal
+    //SO of Body Female anamoly
+    //SO of Body Male anamoly
 
     //SO of Scarf anamoly
     //SO of Fox ears for anamoly
@@ -27,8 +36,38 @@ public class MainGameSystem : MonoBehaviour
     private int CustomerCount = 0;
     private int DuplicateCount = 0;
 
-    public void BTN_CheckOrder() {
-        CheckOrderMatch();
+    [SerializeField]
+    private int FailConut = 0;
+
+    public bool FailCheck() { 
+        return FailConut >= 3;
+    }
+
+    
+
+    public bool CheckOrderShouldServe()
+    {
+        if (CustomerType == E_CharacterType.Anamoly)
+        {
+            Debug.Log("Anamoly always not serve");
+            FailConut += 3;
+            return false;
+        }
+        // Normal customer check
+        return CheckOrderMatch();
+    }
+
+    public bool CheckShouldMakeCustomerOut()
+    {
+        if (CustomerType == E_CharacterType.Anamoly)
+        {
+            Debug.Log("Anamoly always make out");
+            
+            return true;
+        }
+
+        FailConut += 1;
+        return false;
     }
 
     public bool CheckOrderMatch()
@@ -51,6 +90,14 @@ public class MainGameSystem : MonoBehaviour
 
         Debug.Log("Order matched");
         return true;
+    }
+
+
+
+    public void RandomInitial()
+    {
+        RandomCustomer();
+        RandomTargetTopping();
     }
 
     public void RandomTargetTopping() {
@@ -94,50 +141,6 @@ public class MainGameSystem : MonoBehaviour
                 target_Topping.Mayonnaise = true;
                 break;
         }
-    }
-
-    public string GetOrder() {
-        string order = "Order: ";
-
-        if (CustomerType == E_CharacterType.Normal)
-        {
-            if (target_Topping.Katsuobushi)
-            {
-                order += "Katsuobushi ";
-            }
-            if (target_Topping.Seaweed)
-            {
-                order += "Seaweed ";
-            }
-            if (target_Topping.Mayonnaise)
-            {
-                order += "Mayonnaise ";
-            }
-            return order;
-        }
-
-        if (CustomerType == E_CharacterType.Anamoly)
-        {
-            order += "Anamoly Order ";
-            if (target_Topping.Katsuobushi)
-            {
-                order += "Katsuobushi ";
-            }
-            if (target_Topping.Seaweed)
-            {
-                order += "Seaweed ";
-            }
-            if (target_Topping.Mayonnaise)
-            {
-                order += "Mayonnaise ";
-            }
-
-            order += "(Anamoly Special! Line)";
-
-            return order;
-        }
-
-        return order;
     }
 
     public void RandomCustomer()
@@ -209,6 +212,82 @@ public class MainGameSystem : MonoBehaviour
     }
 
 
+
+    public string GetOrder() {
+        string order = "Order: ";
+
+        if (CustomerType == E_CharacterType.Normal)
+        {
+            if (target_Topping.Katsuobushi)
+            {
+                order += "Katsuobushi ";
+            }
+            if (target_Topping.Seaweed)
+            {
+                order += "Seaweed ";
+            }
+            if (target_Topping.Mayonnaise)
+            {
+                order += "Mayonnaise ";
+            }
+            return order;
+        }
+
+        if (CustomerType == E_CharacterType.Anamoly)
+        {
+            order += "Anamoly Order ";
+            if (target_Topping.Katsuobushi)
+            {
+                order += "Katsuobushi ";
+            }
+            if (target_Topping.Seaweed)
+            {
+                order += "Seaweed ";
+            }
+            if (target_Topping.Mayonnaise)
+            {
+                order += "Mayonnaise ";
+            }
+
+            order += "(Anamoly Special! Line)";
+
+            return order;
+        }
+
+        return order;
+    }
+
+    public void BTN_MakeCustomerOut() {
+        if (CheckShouldMakeCustomerOut())
+        {
+            Debug.Log("Get out!!");
+        }
+        else {
+            Debug.Log("You can't make that customer out");
+        }
+
+        RandomInitial();
+    }
+
+    public void BTN_CheckOrder()
+    {
+
+        if (!CheckOrderShouldServe())
+        {
+            FailConut++;
+            Debug.Log("No no no");
+            RandomInitial();
+        }
+        else
+        {
+            Debug.Log("Yum yum yum");
+            RandomInitial();
+        }
+    }
+
+    public void TriggerEvent() { 
+        
+    }
 
     //method set apppearance according to customer type
 }
