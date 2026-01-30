@@ -42,7 +42,6 @@ public class MainGameSystem : MonoBehaviour
     public bool FailCheck() { 
         return FailConut >= 3;
     }
-
     
 
     public bool CheckOrderShouldServe()
