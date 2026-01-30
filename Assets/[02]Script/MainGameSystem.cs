@@ -15,18 +15,18 @@ public class MainGameSystem : MonoBehaviour
 
     //Customer GameObject Parts
 
-    //SO of Mask normal
-    //SO of Mask Anamoly
+    //----Transfer to Character maker------ SO of Mask normal
+    //----Transfer to Character maker------ SO of Mask Anamoly
 
-    //SO of Body Female normal
-    //SO of Body Male normal
-    //SO of Body Female anamoly
-    //SO of Body Male anamoly
+    //----Transfer to Character maker------  of Body Female normal
+    //----Transfer to Character maker------  of Body Male normal
+    //----Transfer to Character maker------ of Body Female anamoly
+    //----Transfer to Character maker------ of Body Male anamoly
 
     //SO of Scarf anamoly
-    //SO of Fox ears for anamoly
-    //SO of tail for anamoly
-    //SO of flame for anamoly
+    //----Transfer to Character maker------ SO of Fox ears for anamoly
+    //----Transfer to Character maker------ SO of tail for anamoly
+    //----Transfer to Character maker------ SO of flame for anamoly
 
 
     private bool ForceTwoType = true;

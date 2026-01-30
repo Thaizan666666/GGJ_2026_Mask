@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64e3a74becd4ce41bb85b803605a3f8, type: 3}
-  m_Name: SO_Mask_Anamoly
-  m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Anamoly
-  Mask_Anamoly:
+  m_Script: {fileID: 11500000, guid: 59a9b9a451c561143af958e301ee4cfe, type: 3}
+  m_Name: SO_FoxEar_Anomaly
+  m_EditorClassIdentifier: Assembly-CSharp::SO_FoxEar_Anomaly
+  FoxEar_Anomaly:
     _serializedList: []

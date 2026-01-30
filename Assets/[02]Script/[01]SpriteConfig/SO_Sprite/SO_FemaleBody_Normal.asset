@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64e3a74becd4ce41bb85b803605a3f8, type: 3}
-  m_Name: SO_Mask_Anamoly
-  m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Anamoly
-  Mask_Anamoly:
+  m_Script: {fileID: 11500000, guid: 56805785f7365954abc21b7334326253, type: 3}
+  m_Name: SO_FemaleBody_Normal
+  m_EditorClassIdentifier: Assembly-CSharp::SO_FemaleBody_Normal
+  FemaleBody_Normal:
     _serializedList: []
