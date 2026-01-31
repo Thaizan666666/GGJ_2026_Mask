@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 
 public class ImageSequenceButton : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class ImageSequenceButton : MonoBehaviour
     public Image[] images; // ใส่ 4 รูปเรียงจากบนลงล่าง (0=บน, 3=ล่าง)
     public Button mainButton;
     public TextMeshProUGUI debugText; // แสดงสถานะ (ถ้ามี)
+    public MainGameSystem mainGameSystem; // อ้างอิงถึงสคริปต์หลัก (ถ้ามี)
 
     [Header("Sprites")]
     public Sprite whiteSprite; // Sprite สีขาว
@@ -22,9 +22,22 @@ public class ImageSequenceButton : MonoBehaviour
     public Color whiteColor = Color.white;
     public Color blackColor = Color.black;
 
-    private int currentIndex = 3; // เริ่มจากล่างสุด
+    // Time tracking variables
+    private float countdownTimer = 0f;
+    private bool isCountingDown = false;
     private bool isReady = false;
-    private int clickCount = 0;
+
+    private int currentIndex = 3; // เริ่มจากล่างสุด
+    public int clickCount = 0;
+
+    // Public properties for tracking
+    public float TimeRemaining => Mathf.Max(0, countdownTimer);
+    public float TimeElapsed => countdownTime - TimeRemaining;
+    public float ProgressPercent => (TimeElapsed / countdownTime) * 100f;
+    public bool IsCountingDown => isCountingDown;
+    public bool IsReady => isReady;
+    public int ClickCount => clickCount;
+    public int RemainingClicks => currentIndex + 1;
 
     void Start()
     {
@@ -39,22 +52,51 @@ public class ImageSequenceButton : MonoBehaviour
         SetAllImagesWhite();
 
         // เริ่มนับถอยหลัง
-        StartCoroutine(CountdownAndTurnBlack());
+        StartCountdown();
     }
 
-    IEnumerator CountdownAndTurnBlack()
+    void Update()
     {
-        float timeLeft = countdownTime;
-
-        // นับถอยหลัง
-        while (timeLeft > 0)
+        // Handle countdown
+        if (isCountingDown)
         {
-            if (debugText != null)
-                debugText.text = $"เริ่มใน: {timeLeft:F1}s";
+            countdownTimer -= Time.deltaTime;
 
-            yield return new WaitForSeconds(0.1f);
-            timeLeft -= 0.1f;
+            // Update debug text
+            if (debugText != null)
+            {
+                debugText.text = $"เริ่มใน: {countdownTimer:F1}s ({ProgressPercent:F0}%)";
+            }
+
+            // Check if countdown is complete
+            if (countdownTimer <= 0)
+            {
+                OnCountdownComplete();
+            }
         }
+
+#if UNITY_EDITOR
+        // Reset key
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ResetSequence();
+        }
+#endif
+
+    }
+
+    void StartCountdown()
+    {
+        countdownTimer = countdownTime;
+        isCountingDown = true;
+        isReady = false;
+        Debug.Log($"Countdown started: {countdownTime} seconds");
+    }
+
+    void OnCountdownComplete()
+    {
+        isCountingDown = false;
+        isReady = true;
 
         // เปลี่ยนทุกรูปเป็นสีดำ/Sprite ดำ
         SetAllImagesBlack();
@@ -66,7 +108,6 @@ public class ImageSequenceButton : MonoBehaviour
         if (debugText != null)
             debugText.text = "กดปุ่มได้แล้ว!";
 
-        isReady = true;
         Debug.Log("พร้อมกดปุ่มแล้ว!");
     }
 
@@ -75,10 +116,11 @@ public class ImageSequenceButton : MonoBehaviour
         if (!isReady) return;
 
         // ตรวจสอบว่ายังมีรูปที่ต้องเปลี่ยนอีกไหม
-        if (currentIndex >= 0)
+        if (currentIndex >= 0 && !mainGameSystem.IsHaveDoh)
         {
             clickCount++;
-
+            mainGameSystem.EnableBTNTopping(true);
+            mainGameSystem.IsHaveDoh = true;
             // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
             SetImageWhite(images[currentIndex]);
 
@@ -98,6 +140,7 @@ public class ImageSequenceButton : MonoBehaviour
 
                 Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
                 mainButton.interactable = false;
+                isReady = false;
             }
         }
     }
@@ -153,9 +196,7 @@ public class ImageSequenceButton : MonoBehaviour
     // ฟังก์ชันรีเซ็ต (เรียกจากปุ่มอื่นได้)
     public void ResetSequence()
     {
-        StopAllCoroutines();
         currentIndex = 3;
-        isReady = false;
         clickCount = 0;
 
         SetAllImagesWhite();
@@ -166,13 +207,13 @@ public class ImageSequenceButton : MonoBehaviour
         if (debugText != null)
             debugText.text = "";
 
-        StartCoroutine(CountdownAndTurnBlack());
+        StartCountdown();
+        Debug.Log("Sequence reset!");
     }
-    public void Update()
+
+    // Helper method to get detailed time info
+    public string GetTimeInfo()
     {
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            ResetSequence();
-        }
+        return $"Time Remaining: {TimeRemaining:F2}s | Elapsed: {TimeElapsed:F2}s | Progress: {ProgressPercent:F1}%";
     }
 }
