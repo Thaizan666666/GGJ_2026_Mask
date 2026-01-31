@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class CharacterMaker : MonoBehaviour
 {
+    public SpriteRenderer SpriteRenderer_Mask;
+    public SpriteRenderer SpriteRenderer_FoxEar;
+    public SpriteRenderer SpriteRenderer_Body;
+    public SpriteRenderer SpriteRenderer_Flame;
+    public SpriteRenderer SpriteRenderer_Tail;
+
     [Header("Mask Sprite Set")]
     public SO_Mask_Normal Mask_Normal_SO;
     public SO_Mask_Anomaly Mask_Anamoly_SO;
@@ -22,4 +28,7 @@ public class CharacterMaker : MonoBehaviour
 
     [Header("FoxEar")]
     public SO_FoxEar_Anomaly FoxEar_Anamoly_SO;
+
+
+
 }
