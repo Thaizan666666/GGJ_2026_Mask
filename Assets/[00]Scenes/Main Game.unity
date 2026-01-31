@@ -4369,7 +4369,7 @@ MonoBehaviour:
   btn_Seaweed: {fileID: 168798854}
   btn_Mayonnaise: {fileID: 2121939152}
   currentDohBarral: 3
-  takoyaki: {fileID: 0}
+  takoyaki: {fileID: 337201977}
   moveControll_OBJ: {fileID: 182460586}
   dialogueSystem_OBJ: {fileID: 1504586981}
   text_Dialogue: {fileID: 1567475260}

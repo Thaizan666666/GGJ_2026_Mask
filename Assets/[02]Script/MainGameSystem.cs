@@ -95,8 +95,10 @@ public class MainGameSystem : MonoBehaviour
         isMovementComplete = moveControll_OBJ.IsMovementComplete();
         isLeftButtonPressed = Mouse.current.leftButton.wasPressedThisFrame;
 
-        HandleDialogueTimer();
-        HandleStageTransitions();
+        if(!IsgameEnd){
+            HandleDialogueTimer();
+            HandleStageTransitions();
+        }
     }
 
     private void HandleDialogueTimer()
@@ -233,6 +235,7 @@ public class MainGameSystem : MonoBehaviour
         {
             Debug.Log("Anamoly always not serve");
             FailConut += 3;
+            EndByPossessed = true;
             return false;
         }
         return CheckOrderMatch();
@@ -401,6 +404,8 @@ public class MainGameSystem : MonoBehaviour
             ShouldShowDialogue = true;
             moveControll_OBJ.MoveTo(StageEvent.Service_End);
         }
+
+        CheckGameEnd();
     }
 
     public void CheckOrder()
@@ -436,14 +441,16 @@ public class MainGameSystem : MonoBehaviour
     }
 
     public void CheckGameEnd() {
-        if (currentDohBarral <= 0 && takoyaki.clickCount == 3)
+        if (currentDohBarral <= 0 && takoyaki.clickCount == 4)
         {
             Debug.Log("Game Ended : All Done");
+            EndByAllDone = true;
             IsgameEnd = true;
         }
         else if (FailConut > 3 && !EndByPossessed)
         {
             Debug.Log("Game Ended : Too Many Failures");
+            EndByFailed = true;
             IsgameEnd = true;
         }
         else if (EndByPossessed) {
