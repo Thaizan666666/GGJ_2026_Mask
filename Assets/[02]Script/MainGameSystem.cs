@@ -31,7 +31,7 @@ public class MainGameSystem : MonoBehaviour
 
     private bool ForceTwoType = true;
     [SerializeField]
-    private E_CharacterType CustomerType;
+    public E_CharacterType CustomerType;
     [SerializeField]
     private int CustomerCount = 0;
     private int DuplicateCount = 0;
@@ -288,5 +288,10 @@ public class MainGameSystem : MonoBehaviour
         
     }
 
+
+    public string GetState()
+    {
+        return "Customer Type: " + CustomerType.ToString() + ", Fail Count: " + FailConut.ToString();
+    }
     //method set apppearance according to customer type
 }

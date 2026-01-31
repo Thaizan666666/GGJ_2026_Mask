@@ -8,7 +8,7 @@ using UnityEngine;
 public class SO_Mask_Normal : ScriptableObject
 {
     [SerializedDictionary("Normal", "Wet")]
-    public SerializedDictionary<Sprite, Sprite> Mask_Normal;
+    public SerializedDictionary<Sprite, Sprite> sprites;
 
 
 }

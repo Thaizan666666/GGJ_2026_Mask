@@ -5,5 +5,5 @@ using UnityEngine;
 public class SO_Tail_Anomaly : ScriptableObject
 {
     [SerializedDictionary("Normal", "Wet")]
-    public SerializedDictionary<Sprite, Sprite> Tail_Anomaly;
+    public SerializedDictionary<Sprite, Sprite> sprites;
 }

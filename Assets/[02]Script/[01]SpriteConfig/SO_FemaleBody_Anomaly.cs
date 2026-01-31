@@ -5,5 +5,5 @@ using UnityEngine;
 public class SO_FemaleBody_Anomaly : ScriptableObject
 {
     [SerializedDictionary("Normal", "Wet")]
-    public SerializedDictionary<Sprite, Sprite> FemaleBody_Anomaly;
+    public SerializedDictionary<Sprite, Sprite> sprites;
 }

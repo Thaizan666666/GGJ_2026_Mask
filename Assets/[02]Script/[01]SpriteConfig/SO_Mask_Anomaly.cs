@@ -8,6 +8,6 @@ using UnityEngine;
 public class SO_Mask_Anomaly : ScriptableObject
 {
     [SerializedDictionary("Normal", "Wet")]
-    public SerializedDictionary<Sprite, Sprite> Mask_Anomaly;
+    public SerializedDictionary<Sprite, Sprite> sprites;
 
 }
