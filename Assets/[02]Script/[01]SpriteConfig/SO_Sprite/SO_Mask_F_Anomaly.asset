@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64e3a74becd4ce41bb85b803605a3f8, type: 3}
+  m_Name: SO_Mask_F_Anomaly
+  m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Anomaly
+  sprites:
+    _serializedList:
+    - Key: {fileID: 21300000, guid: 9e3781a66e3977a458476aa1de99f982, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: f52a42ed6fdb4844290d2fa051418c6b, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: e2652543a8d5038409116fb7af8e0c98, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: 40da4ea9502d8f54588dd21e0158133d, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: 0d5761da8e9413d4f83fac68ba4aca2d, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: 632140eb8e5022348925953d97b37937, type: 3}
+      Value: {fileID: 0}

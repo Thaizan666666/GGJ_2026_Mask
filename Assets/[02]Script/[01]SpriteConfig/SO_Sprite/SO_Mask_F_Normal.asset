@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd81a7d8cb06a9b47a7760f1e460ace7, type: 3}
+  m_Name: SO_Mask_F_Normal
+  m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Normal
+  sprites:
+    _serializedList:
+    - Key: {fileID: 21300000, guid: 72bca1ff81227a342b713b539a0afb95, type: 3}
+      Value: {fileID: 21300000, guid: 72bca1ff81227a342b713b539a0afb95, type: 3}
+    - Key: {fileID: 21300000, guid: a873a67353a87974f9a59daef028dc28, type: 3}
+      Value: {fileID: 21300000, guid: a873a67353a87974f9a59daef028dc28, type: 3}
+    - Key: {fileID: 21300000, guid: 60b54dbbe43422f419e36b0d58683b03, type: 3}
+      Value: {fileID: 21300000, guid: 60b54dbbe43422f419e36b0d58683b03, type: 3}
+    - Key: {fileID: 21300000, guid: e88fac4dad149724ca3626b9e4646a51, type: 3}
+      Value: {fileID: 21300000, guid: e88fac4dad149724ca3626b9e4646a51, type: 3}
+    - Key: {fileID: 21300000, guid: 411b104dd8cb5f54fb3377da296088a3, type: 3}
+      Value: {fileID: 21300000, guid: 411b104dd8cb5f54fb3377da296088a3, type: 3}
+    - Key: {fileID: 21300000, guid: 90a4d760c9b903f4eba14acc0ec6920d, type: 3}
+      Value: {fileID: 21300000, guid: 90a4d760c9b903f4eba14acc0ec6920d, type: 3}
