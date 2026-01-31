@@ -26,4 +26,13 @@ public class TextBlinkAlpha : MonoBehaviour
             textMesh.color = color;
         }
     }
+    public void IsonClick()
+    {
+        if (!isBlink)
+        {
+            Color color = textMesh.color;
+            color.a = 0f;
+            textMesh.color = color;
+        }
+    }
 }
