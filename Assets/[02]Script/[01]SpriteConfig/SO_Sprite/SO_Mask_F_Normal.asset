@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Normal
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: 5b7d3e4eddb45784ca7b8b88b8a14119, type: 3}
-      Value: {fileID: 21300000, guid: 5b7d3e4eddb45784ca7b8b88b8a14119, type: 3}
-    - Key: {fileID: 21300000, guid: 2085ff7ebf5c94045b7fecac5fe2c876, type: 3}
-      Value: {fileID: 21300000, guid: 2085ff7ebf5c94045b7fecac5fe2c876, type: 3}
-    - Key: {fileID: 21300000, guid: 75e1f0f1eea8c1b4a8180204b41face6, type: 3}
-      Value: {fileID: 21300000, guid: 75e1f0f1eea8c1b4a8180204b41face6, type: 3}
-    - Key: {fileID: 21300000, guid: 6d8c7ddde7cbf9d4fa03674499ee5ef7, type: 3}
-      Value: {fileID: 21300000, guid: 6d8c7ddde7cbf9d4fa03674499ee5ef7, type: 3}
-    - Key: {fileID: 21300000, guid: fd8c5cab3e8c2ac4187d00c01387be74, type: 3}
-      Value: {fileID: 21300000, guid: fd8c5cab3e8c2ac4187d00c01387be74, type: 3}
-    - Key: {fileID: 21300000, guid: 57ce57854698a024995640ad246f1be3, type: 3}
-      Value: {fileID: 21300000, guid: 57ce57854698a024995640ad246f1be3, type: 3}
+    - Key: {fileID: 21300000, guid: 72bca1ff81227a342b713b539a0afb95, type: 3}
+      Value: {fileID: 21300000, guid: 72bca1ff81227a342b713b539a0afb95, type: 3}
+    - Key: {fileID: 21300000, guid: a873a67353a87974f9a59daef028dc28, type: 3}
+      Value: {fileID: 21300000, guid: a873a67353a87974f9a59daef028dc28, type: 3}
+    - Key: {fileID: 21300000, guid: 60b54dbbe43422f419e36b0d58683b03, type: 3}
+      Value: {fileID: 21300000, guid: 60b54dbbe43422f419e36b0d58683b03, type: 3}
+    - Key: {fileID: 21300000, guid: e88fac4dad149724ca3626b9e4646a51, type: 3}
+      Value: {fileID: 21300000, guid: e88fac4dad149724ca3626b9e4646a51, type: 3}
+    - Key: {fileID: 21300000, guid: 411b104dd8cb5f54fb3377da296088a3, type: 3}
+      Value: {fileID: 21300000, guid: 411b104dd8cb5f54fb3377da296088a3, type: 3}
+    - Key: {fileID: 21300000, guid: 90a4d760c9b903f4eba14acc0ec6920d, type: 3}
+      Value: {fileID: 21300000, guid: 90a4d760c9b903f4eba14acc0ec6920d, type: 3}

@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Normal
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: c7fb647577e4eb64bbcb5d358a0d28ca, type: 3}
-      Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 17a314e031a1f5443b6b08e12848b150, type: 3}
-      Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 91742ebaba455c84b80661ec70315dc0, type: 3}
-      Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 95c87f1228059c343b76079d92b957ad, type: 3}
-      Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 194afdd6c4ab09c4698d99d8c8b7ef33, type: 3}
-      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: 13d36a82bc2fe264dae9898764bc3f1a, type: 3}
+      Value: {fileID: 21300000, guid: 13d36a82bc2fe264dae9898764bc3f1a, type: 3}
+    - Key: {fileID: 21300000, guid: 85ce3141135a2bc4bb1cac3d21c3b938, type: 3}
+      Value: {fileID: 21300000, guid: 85ce3141135a2bc4bb1cac3d21c3b938, type: 3}
+    - Key: {fileID: 21300000, guid: 046aed935c7c21744bf6b5e93ec5c3bf, type: 3}
+      Value: {fileID: 21300000, guid: 046aed935c7c21744bf6b5e93ec5c3bf, type: 3}
+    - Key: {fileID: 21300000, guid: d3df27c38ee66c440863976f11346456, type: 3}
+      Value: {fileID: 21300000, guid: d3df27c38ee66c440863976f11346456, type: 3}
+    - Key: {fileID: 21300000, guid: f25a61363f209ab4cbdd8e93341165ae, type: 3}
+      Value: {fileID: 21300000, guid: f25a61363f209ab4cbdd8e93341165ae, type: 3}
+    - Key: {fileID: 21300000, guid: d40efd3171f4f854dbd6a24d0aeb6197, type: 3}
+      Value: {fileID: 21300000, guid: d40efd3171f4f854dbd6a24d0aeb6197, type: 3}

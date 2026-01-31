@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_FoxEar_M_Anomaly
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: 3349af86cfeb63f40832db50d6a1550f, type: 3}
+    - Key: {fileID: 21300000, guid: b59eaee5e3723684096946a5a8b9ef6c, type: 3}
       Value: {fileID: 0}

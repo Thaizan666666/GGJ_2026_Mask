@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_FemaleBody_Normal
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: 9919d2372544e904b9be3285ebe2ea6e, type: 3}
-      Value: {fileID: 21300000, guid: 1480a62c583ade94da7ee7a6597a8714, type: 3}
-    - Key: {fileID: 21300000, guid: 3753d003a922f1e4888f8593c19a1e48, type: 3}
-      Value: {fileID: 21300000, guid: 40074ea81ebd40543be5ccda927b4672, type: 3}
-    - Key: {fileID: 21300000, guid: e49a6980dd8803e4f9f11eada84aafb4, type: 3}
-      Value: {fileID: 21300000, guid: b3e9b6838e1e2f84dbd152919400b329, type: 3}
+    - Key: {fileID: 21300000, guid: a36dadb6a34d2b54ea5df376896471fe, type: 3}
+      Value: {fileID: 21300000, guid: 678b2058a7bb7d94ab8ab32f73e36a8f, type: 3}
+    - Key: {fileID: 21300000, guid: 945380c7181656b46b4b9c16e623709e, type: 3}
+      Value: {fileID: 21300000, guid: 37c05d26c7708af469f9a0973d4f0e65, type: 3}
+    - Key: {fileID: 21300000, guid: f87d21f5f7cba60468d715a8e6f166c6, type: 3}
+      Value: {fileID: 21300000, guid: 1797bb81d1793f6459b06a2787de9059, type: 3}

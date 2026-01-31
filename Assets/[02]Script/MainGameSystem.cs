@@ -51,7 +51,11 @@ public class MainGameSystem : MonoBehaviour
     public bool ShouldRandomNewOrder = false;
     public bool ShouldShowDialogue = false;
     public bool ShouldGetCustomerOut = false;
-    public bool IsPossessed = false;
+    
+    public bool IsgameEnd = false;
+    public bool EndByPossessed = false;
+    public bool EndByFailed = false;
+    public bool EndByAllDone = false;
 
     [Space(5)]
 
@@ -419,8 +423,11 @@ public class MainGameSystem : MonoBehaviour
     {
         CheckOrder();
         SetShouldShowDialogue(true);
+        EnableBTNTopping(false);
         IsHaveDoh = false;
         moveControll_OBJ.MoveTo(StageEvent.Service_End);
+
+        CheckGameEnd();
     }
 
     public void TriggerEvent()
@@ -432,13 +439,16 @@ public class MainGameSystem : MonoBehaviour
         if (currentDohBarral <= 0 && takoyaki.clickCount == 3)
         {
             Debug.Log("Game Ended : All Done");
+            IsgameEnd = true;
         }
-        else if (FailConut > 3 && !IsPossessed)
+        else if (FailConut > 3 && !EndByPossessed)
         {
             Debug.Log("Game Ended : Too Many Failures");
+            IsgameEnd = true;
         }
-        else if (IsPossessed) {
+        else if (EndByPossessed) {
             Debug.Log("Game Ended : You be Possesed");
+            IsgameEnd = true;
         }
 
     }

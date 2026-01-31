@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_Mask_Anomaly
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: c7fb647577e4eb64bbcb5d358a0d28ca, type: 3}
+    - Key: {fileID: 21300000, guid: 946939c615e557e42b2ddb871fe94756, type: 3}
       Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 17a314e031a1f5443b6b08e12848b150, type: 3}
+    - Key: {fileID: 21300000, guid: 75c38c82eee175d4a9ef6d5a2cebb1a8, type: 3}
       Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 91742ebaba455c84b80661ec70315dc0, type: 3}
+    - Key: {fileID: 21300000, guid: c001e4fad90157c448f159746937b123, type: 3}
       Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 95c87f1228059c343b76079d92b957ad, type: 3}
+    - Key: {fileID: 21300000, guid: d1fe2b90c3af1d742997d41cc88635b2, type: 3}
       Value: {fileID: 0}
-    - Key: {fileID: 21300000, guid: 194afdd6c4ab09c4698d99d8c8b7ef33, type: 3}
+    - Key: {fileID: 21300000, guid: 3cdb5cdd13ae3ef4d89a1f9ec341678f, type: 3}
       Value: {fileID: 0}

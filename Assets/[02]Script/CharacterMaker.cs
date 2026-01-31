@@ -74,7 +74,6 @@ public class CharacterMaker : MonoBehaviour
     // Enum to identify each anomaly part slot
     private enum AnomalyPart
     {
-        Body,
         Mask,
         FoxEar,
         Flame,
@@ -85,7 +84,13 @@ public class CharacterMaker : MonoBehaviour
     {
         SetSpriteNormalCustomer();
 
-        int anomalyCount = 2;
+        // Always set anomaly body
+        if (CharGender == Gender.Male)
+            SpriteRenderer_Body.sprite = MaleBody_Anamoly_SO.sprites.RandomKey();
+        else if (CharGender == Gender.Female)
+            SpriteRenderer_Body.sprite = FemaleBody_Anamoly_SO.sprites.RandomKey();
+
+        int anomalyCount = Random.Range(1, 3); // Random 1 or 2 additional anomalies
         SetSpriteAnomalyCustomer(anomalyCount, new AnomalyPart[0]);
     }
 
@@ -93,7 +98,7 @@ public class CharacterMaker : MonoBehaviour
     {
         if (remaining <= 0) return;
 
-        AnomalyPart picked = (AnomalyPart)Random.Range(0, 2); // 0-4 now covers all 5 parts
+        AnomalyPart picked = (AnomalyPart)Random.Range(0, 4); // 0-3 now covers all 4 parts (Mask, FoxEar, Flame, Tail)
 
         // If this part was already used, try again
         if (System.Array.IndexOf(usedParts, picked) != -1)
@@ -102,14 +107,28 @@ public class CharacterMaker : MonoBehaviour
             return;
         }
 
-        // If mask is already selected, cannot select ear
+        // If mask already exists (from normal setup), cannot select fox ear
+        if (picked == AnomalyPart.FoxEar && SpriteRenderer_Mask.sprite != null)
+        {
+            SetSpriteAnomalyCustomer(remaining, usedParts);
+            return;
+        }
+
+        // If fox ear already exists (from normal setup), cannot select mask
+        if (picked == AnomalyPart.Mask && SpriteRenderer_FoxEar.sprite != null)
+        {
+            SetSpriteAnomalyCustomer(remaining, usedParts);
+            return;
+        }
+
+        // If mask is already selected in this anomaly pass, cannot select ear
         if (picked == AnomalyPart.FoxEar && System.Array.IndexOf(usedParts, AnomalyPart.Mask) != -1)
         {
             SetSpriteAnomalyCustomer(remaining, usedParts);
             return;
         }
 
-        // If ear is already selected, cannot select mask
+        // If ear is already selected in this anomaly pass, cannot select mask
         if (picked == AnomalyPart.Mask && System.Array.IndexOf(usedParts, AnomalyPart.FoxEar) != -1)
         {
             SetSpriteAnomalyCustomer(remaining, usedParts);
@@ -118,12 +137,6 @@ public class CharacterMaker : MonoBehaviour
 
         switch (picked)
         {
-            case AnomalyPart.Body:
-                if (CharGender == Gender.Male)
-                    SpriteRenderer_Body.sprite = MaleBody_Anamoly_SO.sprites.RandomKey();
-                else if (CharGender == Gender.Female)
-                    SpriteRenderer_Body.sprite = FemaleBody_Anamoly_SO.sprites.RandomKey();
-                break;
             case AnomalyPart.Mask:
                 if (CharGender == Gender.Male)
                     SpriteRenderer_Mask.sprite = Mask_Anamoly_M_SO.sprites.RandomKey();
@@ -148,6 +161,8 @@ public class CharacterMaker : MonoBehaviour
         System.Array.Copy(usedParts, newUsedParts, usedParts.Length);
         newUsedParts[usedParts.Length] = picked;
 
+        SpriteRenderer_FoxEar.sortingOrder = -1;
+
         SetSpriteAnomalyCustomer(remaining - 1, newUsedParts);
     }
 
@@ -161,14 +176,36 @@ public class CharacterMaker : MonoBehaviour
         {
             CharGender = Gender.Male;
             SpriteRenderer_Body.sprite = MaleBody_Normal_SO.sprites.RandomKey();
-            SpriteRenderer_Mask.sprite = Mask_Normal_M_SO.sprites.RandomKey();
+
+            // 50/50 chance for mask or fox ear, but not both
+            int randFaceFeature = Random.Range(0, 2);
+            if (randFaceFeature == 0)
+            {
+                SpriteRenderer_Mask.sprite = Mask_Normal_M_SO.sprites.RandomKey();
+            }
+            else
+            {
+                SpriteRenderer_FoxEar.sprite = FoxEar_M_Normal_SO.sprites.RandomKey();
+            }
         }
         else if (randGender == 1) //Use Female
         {
             CharGender = Gender.Female;
             SpriteRenderer_Body.sprite = FemaleBody_Normal_SO.sprites.RandomKey();
-            SpriteRenderer_Mask.sprite = Mask_Normal_F_SO.sprites.RandomKey();
+
+            // 50/50 chance for mask or fox ear, but not both
+            int randFaceFeature = Random.Range(0, 2);
+            if (randFaceFeature == 0)
+            {
+                SpriteRenderer_Mask.sprite = Mask_Normal_F_SO.sprites.RandomKey();
+            }
+            else
+            {
+                SpriteRenderer_FoxEar.sprite = FoxEar_F_Normal_SO.sprites.RandomKey();
+            }
         }
+
+        SpriteRenderer_FoxEar.sortingOrder = 0;
     }
 
     public void ResetSpriteCustomer()
