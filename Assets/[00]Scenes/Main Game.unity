@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.46, y: 2.86}
+  m_AnchoredPosition: {x: -2.31, y: 2.82}
   m_SizeDelta: {x: 4, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11347151
@@ -197,14 +197,14 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 11347152}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1504586977}
         m_TargetAssemblyTypeName: MainGameSystem, Assembly-CSharp
-        m_MethodName: SetMayonnaise
+        m_MethodName: SetKatsuobushi
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -479,12 +479,12 @@ SpriteRenderer:
   m_SortingLayerID: 1979425321
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b06be0c95ed965142877d3a27256e134, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9, y: 9.98}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -662,7 +662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 2.97, y: 2.86}
+  m_AnchoredPosition: {x: 0.20000017, y: 2.82}
   m_SizeDelta: {x: 4, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &168798854
@@ -704,14 +704,14 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 168798855}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1504586977}
         m_TargetAssemblyTypeName: MainGameSystem, Assembly-CSharp
-        m_MethodName: SetMayonnaise
+        m_MethodName: SetSeaweed
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1660,7 +1660,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 2.6, y: 0.97}
+  m_AnchoredPosition: {x: 1.2299999, y: 0.97000027}
   m_SizeDelta: {x: 8, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &425429655
@@ -4114,7 +4114,7 @@ SpriteRenderer:
   m_SortingLayerID: 1979425321
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f654023c9614074a97b01d2e3fadc24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4357,6 +4357,8 @@ MonoBehaviour:
   btn_Katsuobushi: {fileID: 11347151}
   btn_Seaweed: {fileID: 168798854}
   btn_Mayonnaise: {fileID: 2121939152}
+  currentDohBarral: 3
+  takoyaki: {fileID: 0}
   moveControll_OBJ: {fileID: 182460586}
   dialogueSystem_OBJ: {fileID: 1504586981}
   text_Dialogue: {fileID: 1567475260}
@@ -4366,6 +4368,7 @@ MonoBehaviour:
   ShouldRandomNewOrder: 0
   ShouldShowDialogue: 0
   ShouldGetCustomerOut: 0
+  IsPossessed: 0
   CustomerType: 0
   CustomerCount: 0
   FailConut: 0
@@ -4421,15 +4424,20 @@ MonoBehaviour:
   SpriteRenderer_Body: {fileID: 2063995517}
   SpriteRenderer_Flame: {fileID: 1841698906}
   SpriteRenderer_Tail: {fileID: 1492180990}
-  Mask_Normal_SO: {fileID: 11400000, guid: 7c3e96f61233ff74eaf1879157461fd4, type: 2}
-  Mask_Anamoly_SO: {fileID: 11400000, guid: 1f1f071293006874c96178bac858917f, type: 2}
+  Mask_Normal_F_SO: {fileID: 11400000, guid: 22d8055e3ca38b74788ac91429ac11c1, type: 2}
+  Mask_Anamoly_F_SO: {fileID: 11400000, guid: a371f6cfa514e0c4ca2cc557a50f582d, type: 2}
+  Mask_Normal_M_SO: {fileID: 11400000, guid: 08dd19832005c8e42b1364956e7ffc51, type: 2}
+  Mask_Anamoly_M_SO: {fileID: 11400000, guid: 650fa3549d151204788df507d07377b4, type: 2}
   FemaleBody_Normal_SO: {fileID: 11400000, guid: 1491b1e5d86aa1b4d93a4cd8c2f0a2a8, type: 2}
   FemaleBody_Anamoly_SO: {fileID: 11400000, guid: e4b69b32281ef8a4e8d8f603ad160c52, type: 2}
   MaleBody_Normal_SO: {fileID: 11400000, guid: bdb633c589655ad48aeea3f882637b02, type: 2}
   MaleBody_Anamoly_SO: {fileID: 11400000, guid: 958c2db02bbea954e8d6691b56ff6cbe, type: 2}
+  FoxEar_F_Normal_SO: {fileID: 11400000, guid: cd96cf3bfccc3ee40af3b4d1d510c2aa, type: 2}
+  FoxEar_F_Anomaly_SO: {fileID: 11400000, guid: d4da0acaaae57894f8742e32f9312def, type: 2}
+  FoxEar_M_Normal_SO: {fileID: 11400000, guid: 592ec322caf0eae4897bf3ce9c28c122, type: 2}
+  FoxEar_M_Anomaly_SO: {fileID: 11400000, guid: 1e54bbbe7212be7428c0686713798bf2, type: 2}
   Flame_Anamoly_SO: {fileID: 11400000, guid: 24331b14ae2efbd4f86fedad60f21a7e, type: 2}
   Tail_Normal_SO: {fileID: 11400000, guid: b92d0c81b5177244aaa846dfeb4e44e2, type: 2}
-  FoxEar_Anamoly_SO: {fileID: 11400000, guid: 3136699655d2481458c520bd4e17f699, type: 2}
 --- !u!114 &1504586981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4602,7 +4610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1531112989
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6636,12 +6644,12 @@ SpriteRenderer:
   m_SortingLayerID: 1979425321
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3944428900155361099, guid: 9919d2372544e904b9be3285ebe2ea6e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e49a6980dd8803e4f9f11eada84aafb4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9, y: 9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -7018,7 +7026,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2121939153}
   m_OnClick:
     m_PersistentCalls:
