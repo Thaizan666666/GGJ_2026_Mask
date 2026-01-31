@@ -1,10 +1,18 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class MainGameSystem : MonoBehaviour
 {
+    [Header("Game Object")]
     public S_Topping target_Topping;
     public S_Topping Current_Topping;
+    public GameObject Customer_Object;
     [Space(5)]
+
+    [Header("")]
+    public GameObject EnterPoint;
+    public GameObject ServicePoint;
+    public GameObject ExitPoint;
 
     //SO of Dialogue lines normal
     //SO of Dialogue lines anamoly
@@ -91,7 +99,7 @@ public class MainGameSystem : MonoBehaviour
         return true;
     }
 
-
+    
 
     public void RandomInitial()
     {
@@ -210,8 +218,6 @@ public class MainGameSystem : MonoBehaviour
         CustomerCount++;
     }
 
-
-
     public string GetOrder() {
         string order = "Order: ";
 
@@ -288,10 +294,10 @@ public class MainGameSystem : MonoBehaviour
         
     }
 
-
     public string GetState()
     {
         return "Customer Type: " + CustomerType.ToString() + ", Fail Count: " + FailConut.ToString();
     }
     //method set apppearance according to customer type
+
 }
