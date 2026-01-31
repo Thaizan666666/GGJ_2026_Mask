@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a2b7c667693964ebe0c91d0fd5126b, type: 3}
   m_Name: SO_Order_Anomaly
   m_EditorClassIdentifier: Assembly-CSharp::SO_Order_Anomaly
-  orders: []
+  orders:
+  - Do you have Tofu filling? No? ...Fine.
+  - I shall partake of
+  - I might deign to taste
+  - Sate my hunger with
+  - One Fried Tofu... uh, wait! Sorry. One

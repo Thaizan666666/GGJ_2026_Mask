@@ -14,7 +14,8 @@ public class MainGameSystem : MonoBehaviour
     public MoveControll moveControll_OBJ;
     [Space(5)]
 
-    [Header("")]
+    [Header("Dialogue")]
+    public DialogueSystem dialogueSystem_OBJ;
 
 
     public bool CanMakeOrder = false;
@@ -96,7 +97,6 @@ public class MainGameSystem : MonoBehaviour
         if (CustomerType == E_CharacterType.Anamoly)
         {
             Debug.Log("Anamoly always make out");
-            
             return true;
         }
 
@@ -136,6 +136,9 @@ public class MainGameSystem : MonoBehaviour
     public void RandomTargetTopping() {
         Current_Topping.ResetTopping();
         int rand = Random.Range(1, 8);
+
+        dialogueSystem_OBJ.OrderDialogue = dialogueSystem_OBJ.dialogueOrder.orders[rand - 1];
+
         switch (rand)
         {
             case 1:
@@ -249,41 +252,15 @@ public class MainGameSystem : MonoBehaviour
 
         if (CustomerType == E_CharacterType.Normal)
         {
-            if (target_Topping.Katsuobushi)
-            {
-                order += "Katsuobushi ";
-            }
-            if (target_Topping.Seaweed)
-            {
-                order += "Seaweed ";
-            }
-            if (target_Topping.Mayonnaise)
-            {
-                order += "Mayonnaise ";
-            }
-            return order;
+            order += dialogueSystem_OBJ.GetRandomOrder(E_CharacterType.Normal);
         }
 
         if (CustomerType == E_CharacterType.Anamoly)
         {
-            order += "Anamoly Order ";
-            if (target_Topping.Katsuobushi)
-            {
-                order += "Katsuobushi ";
-            }
-            if (target_Topping.Seaweed)
-            {
-                order += "Seaweed ";
-            }
-            if (target_Topping.Mayonnaise)
-            {
-                order += "Mayonnaise ";
-            }
-
-            order += "(Anamoly Special! Line)";
-
-            return order;
+            order += dialogueSystem_OBJ.GetRandomOrder(E_CharacterType.Anamoly);
         }
+
+        order += dialogueSystem_OBJ.OrderDialogue;
 
         return order;
     }
@@ -291,9 +268,13 @@ public class MainGameSystem : MonoBehaviour
     public void BTN_MakeCustomerOut() {
         if (CheckShouldMakeCustomerOut())
         {
+            
             Debug.Log("Get out!!");
+
         }
         else {
+
+            Debug.Log(dialogueSystem_OBJ.GetRandomGetoutDialogue());
             Debug.Log("You can't make that customer out");
         }
 
@@ -305,13 +286,18 @@ public class MainGameSystem : MonoBehaviour
 
         if (!CheckOrderShouldServe())
         {
+            //get wrong serve dialogue
+            Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(false));
+
             FailConut++;
-            Debug.Log("No no no");
+            //Debug.Log("No no no");
             RandomInitial();
         }
         else
         {
-            Debug.Log("Yum yum yum");
+            //get right serve dialogue
+            Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(true));
+
             RandomInitial();
         }
     }

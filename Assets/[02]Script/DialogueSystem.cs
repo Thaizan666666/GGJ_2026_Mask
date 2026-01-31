@@ -5,6 +5,7 @@ public class DialogueSystem : MonoBehaviour
 {
     [Header("Dialogue")]
     public string Greeting;
+    public string OrderDialogue;
 
     [Header("SO Properties")]
     public SO_Greeting dialogueGreeting;

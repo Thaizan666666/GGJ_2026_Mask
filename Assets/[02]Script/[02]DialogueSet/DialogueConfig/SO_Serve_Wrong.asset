@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 278c30048428acc49a7be84f1db5c0de, type: 3}
   m_Name: SO_Serve_Wrong
   m_EditorClassIdentifier: Assembly-CSharp::SO_Serve_Wrong
-  dialogue: []
+  dialogue:
+  - Total disaster. I'm not paying for this mess.
+  - Are? This isn't what I ordered.
+  - I waited forever for THIS? My appetite is gone.
+  - Nice try. Better luck with the next customer.
+  - No no no! Wrong one!

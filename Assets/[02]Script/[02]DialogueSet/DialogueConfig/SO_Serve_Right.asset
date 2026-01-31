@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4ef72460d6f16419aa6847b0c6053a, type: 3}
   m_Name: SO_Serve_Right
   m_EditorClassIdentifier: Assembly-CSharp::SO_Serve_Right
-  dialogue: []
+  dialogue:
+  - You got the order perfectly right. Thanks for the treat!
+  - A masterpiece of street food. My compliments to the chef.
+  - Looks delicious! Thanks a bunch!
+  - Finally! Get in my belly!
+  - Oishii!
+  - ishitan
