@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0186aed3da8847a4e9d835e6b063345c, type: 3}
+  m_Name: SO_MaleBody_Normal
+  m_EditorClassIdentifier: Assembly-CSharp::SO_MaleBody_Normal
+  sprites:
+    _serializedList:
+    - Key: {fileID: 3944428900155361099, guid: 9919d2372544e904b9be3285ebe2ea6e, type: 3}
+      Value: {fileID: 4776183047129310858, guid: 1480a62c583ade94da7ee7a6597a8714, type: 3}
+    - Key: {fileID: 4328019773611473420, guid: 3753d003a922f1e4888f8593c19a1e48, type: 3}
+      Value: {fileID: 3583283428882535400, guid: 40074ea81ebd40543be5ccda927b4672, type: 3}
+    - Key: {fileID: -6854177182822987397, guid: e49a6980dd8803e4f9f11eada84aafb4, type: 3}
+      Value: {fileID: -6325561718249805197, guid: b3e9b6838e1e2f84dbd152919400b329, type: 3}
