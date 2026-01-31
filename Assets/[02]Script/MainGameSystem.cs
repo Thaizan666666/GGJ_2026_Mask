@@ -1,41 +1,24 @@
 using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainGameSystem : MonoBehaviour
 {
     [Header("Game Object")]
     public S_Topping target_Topping;
     public S_Topping Current_Topping;
-    public GameObject Customer_Object;
+
+    public CharacterMaker character_OBJ;
+
+    [Header("MoveControll")]
+    public MoveControll moveControll_OBJ;
     [Space(5)]
 
     [Header("")]
-    public GameObject EnterPoint;
-    public GameObject ServicePoint;
-    public GameObject ExitPoint;
 
-    //SO of Dialogue lines normal
-    //SO of Dialogue lines anamoly
 
-    //SO of Dialogue lines served correctly
-    //SO of Dialogue lines served incorrectly
-    //SO of Dialogue lines Getout!! 
-
-    //Customer GameObject Parts
-
-    //----Transfer to Character maker------ SO of Mask normal
-    //----Transfer to Character maker------ SO of Mask Anamoly
-
-    //----Transfer to Character maker------  of Body Female normal
-    //----Transfer to Character maker------  of Body Male normal
-    //----Transfer to Character maker------ of Body Female anamoly
-    //----Transfer to Character maker------ of Body Male anamoly
-
-    //SO of Scarf anamoly
-    //----Transfer to Character maker------ SO of Fox ears for anamoly
-    //----Transfer to Character maker------ SO of tail for anamoly
-    //----Transfer to Character maker------ SO of flame for anamoly
-
+    public bool CanMakeOrder = false;
+    public bool ShouldRandomNewOrder = false;
 
     private bool ForceTwoType = true;
     [SerializeField]
@@ -47,10 +30,49 @@ public class MainGameSystem : MonoBehaviour
     [SerializeField]
     private int FailConut = 0;
 
+    private void Awake()
+    {
+        CustomerType = E_CharacterType.Normal;
+        CustomerCount = 0;
+        DuplicateCount = 0;
+        FailConut = 0;
+        
+    }
+
+    private void Start()
+    {
+        RandomInitial();
+        character_OBJ.RandomSpriteSet();
+    }
+
+    private void Update()
+    {
+        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && moveControll_OBJ.IsMovementComplete()) {
+            RandomTargetTopping();
+            Debug.Log(GetOrder());
+            moveControll_OBJ.stageEvent = StageEvent.Service_Start;
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.Service_Start && !CanMakeOrder){
+            
+            CanMakeOrder = true;
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.Service_End) 
+        {
+            ShouldRandomNewOrder = true;
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && ShouldRandomNewOrder) {
+            RandomInitial();
+            ShouldRandomNewOrder = false;
+        }
+        
+    }
+
     public bool FailCheck() { 
         return FailConut >= 3;
     }
-    
 
     public bool CheckOrderShouldServe()
     {
@@ -99,12 +121,11 @@ public class MainGameSystem : MonoBehaviour
         return true;
     }
 
-    
-
     public void RandomInitial()
     {
         RandomCustomer();
         RandomTargetTopping();
+        
     }
 
     public void RandomTargetTopping() {
@@ -294,10 +315,36 @@ public class MainGameSystem : MonoBehaviour
         
     }
 
+    public void  EnableToppingButton() { 
+        
+    }
+
     public string GetState()
     {
         return "Customer Type: " + CustomerType.ToString() + ", Fail Count: " + FailConut.ToString();
     }
     //method set apppearance according to customer type
 
+
+    //SO of Dialogue lines normal
+    //SO of Dialogue lines anamoly
+
+    //SO of Dialogue lines served correctly
+    //SO of Dialogue lines served incorrectly
+    //SO of Dialogue lines Getout!! 
+
+    //Customer GameObject Parts
+
+    //----Transfer to Character maker------ SO of Mask normal
+    //----Transfer to Character maker------ SO of Mask Anamoly
+
+    //----Transfer to Character maker------  of Body Female normal
+    //----Transfer to Character maker------  of Body Male normal
+    //----Transfer to Character maker------ of Body Female anamoly
+    //----Transfer to Character maker------ of Body Male anamoly
+
+    //SO of Scarf anamoly
+    //----Transfer to Character maker------ SO of Fox ears for anamoly
+    //----Transfer to Character maker------ SO of tail for anamoly
+    //----Transfer to Character maker------ SO of flame for anamoly
 }
