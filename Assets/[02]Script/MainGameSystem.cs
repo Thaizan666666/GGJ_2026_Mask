@@ -1,5 +1,8 @@
 using NUnit.Framework.Constraints;
+using System.IO.Compression;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MainGameSystem : MonoBehaviour
@@ -12,15 +15,27 @@ public class MainGameSystem : MonoBehaviour
 
     [Header("MoveControll")]
     public MoveControll moveControll_OBJ;
-    [Space(5)]
 
     [Header("Dialogue")]
     public DialogueSystem dialogueSystem_OBJ;
 
+    [Header("Dialogue UI")]
+    public TextMeshProUGUI text_Dialogue;
+    public GameObject DiaLogueUI;
+    public float timetoShowDialogue = 3.0f;
+    private float timeProgress = 0.0f;
+    private bool shouldCountTime = false;
+
+    [Header("Cool Down")]
+
+    [Space(5)]
 
     public bool CanMakeOrder = false;
     public bool ShouldRandomNewOrder = false;
     public bool ShouldShowDialogue = false;
+    public bool ShouldGetCustomerOut = false;
+
+    [Space(5)]
 
     private bool ForceTwoType = true;
     [SerializeField]
@@ -49,31 +64,93 @@ public class MainGameSystem : MonoBehaviour
 
     private void Update()
     {
+        if(shouldCountTime)
+        {
+            timeProgress += Time.deltaTime;
+            if (timeProgress >= 2 && Mouse.current.leftButton.wasPressedThisFrame && moveControll_OBJ.stageEvent == StageEvent.Service_End)
+            {
+                // change to customer exit
+                moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
+                timeProgress = 0.0f;
+                shouldCountTime = false;
+                ActiveUiDialog(false);
+            }
+            else if (timeProgress >= 2 && Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                //manual close dialogue
+                timeProgress = 0.0f;
+                shouldCountTime = false;
+                ActiveUiDialog(false);
+            }
+            
+            if (moveControll_OBJ.stageEvent == StageEvent.Service_End && timeProgress >= timetoShowDialogue)
+            {
+                // change to customer exit
+                moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
+                timeProgress = 0.0f;
+                shouldCountTime = false;
+                ActiveUiDialog(false);
+            }
+            else if (timeProgress >= timetoShowDialogue)
+            {
+                //for only closing dialogue
+                timeProgress = 0.0f;
+                shouldCountTime = false;
+                ActiveUiDialog(false);
+            }
+            
+        }
+
         if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && moveControll_OBJ.IsMovementComplete()) {
             RandomTargetTopping();
-            Debug.Log(GetOrder());
+            ActiveUiDialog(true);
+            shouldCountTime = true;
+            SetTextDialog(GetOrder());
+            
             moveControll_OBJ.stageEvent = StageEvent.Service_Start;
         }
 
         if (moveControll_OBJ.stageEvent == StageEvent.Service_Start && !CanMakeOrder){
-            
             CanMakeOrder = true;
         }
 
         if (moveControll_OBJ.stageEvent == StageEvent.Service_End && ShouldShowDialogue) 
         {
             ShouldRandomNewOrder = true;
-
-
-
+            FailCheck();
+            ActiveUiDialog(true);
+            shouldCountTime = true;
             ShouldShowDialogue = false;
         }
 
         if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && ShouldRandomNewOrder) {
+            ActiveUiDialog(false);
             RandomInitial();
             ShouldRandomNewOrder = false;
+            character_OBJ.RandomSpriteSet();
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.WarpToStartPoint && moveControll_OBJ.IsMovementComplete())
+        {
+            RandomInitial();
+            character_OBJ.RandomSpriteSet();
+            moveControll_OBJ.MoveTo(StageEvent.Customer_Enter);
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Exit && moveControll_OBJ.IsMovementComplete() && !shouldCountTime) 
+        { 
+            moveControll_OBJ.MoveTo(StageEvent.WarpToStartPoint);
+        }
+
+        if (moveControll_OBJ.stageEvent == StageEvent.Service_End && ShouldGetCustomerOut)
+        { 
+            moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
+            ShouldGetCustomerOut = false;   
         }
         
+
+
+
     }
 
     public bool FailCheck() { 
@@ -130,7 +207,7 @@ public class MainGameSystem : MonoBehaviour
     {
         RandomCustomer();
         RandomTargetTopping();
-        
+        Current_Topping.ResetTopping();
     }
 
     public void RandomTargetTopping() {
@@ -243,8 +320,7 @@ public class MainGameSystem : MonoBehaviour
                 DuplicateCount = 0;
             }
         }
-
-        CustomerCount++;
+        
     }
 
     public string GetOrder() {
@@ -259,7 +335,7 @@ public class MainGameSystem : MonoBehaviour
         {
             order += dialogueSystem_OBJ.GetRandomOrder(E_CharacterType.Anamoly);
         }
-
+        order += " ";
         order += dialogueSystem_OBJ.OrderDialogue;
 
         return order;
@@ -268,12 +344,14 @@ public class MainGameSystem : MonoBehaviour
     public void BTN_MakeCustomerOut() {
         if (CheckShouldMakeCustomerOut())
         {
-            
+            moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
             Debug.Log("Get out!!");
-
+            ShouldGetCustomerOut = true;
         }
         else {
-
+            moveControll_OBJ.MoveTo(StageEvent.Service_End);
+            ShouldShowDialogue = true;
+            text_Dialogue.text = dialogueSystem_OBJ.GetRandomGetoutDialogue();
             Debug.Log(dialogueSystem_OBJ.GetRandomGetoutDialogue());
             Debug.Log("You can't make that customer out");
         }
@@ -281,13 +359,15 @@ public class MainGameSystem : MonoBehaviour
         RandomInitial();
     }
 
-    public void BTN_CheckOrder()
+    public void CheckOrder()
     {
 
         if (!CheckOrderShouldServe())
         {
             //get wrong serve dialogue
             Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(false));
+            SetTextDialog(dialogueSystem_OBJ.GetRandomServeDialogue(false));
+            ActiveUiDialog(true);
 
             FailConut++;
             //Debug.Log("No no no");
@@ -297,9 +377,20 @@ public class MainGameSystem : MonoBehaviour
         {
             //get right serve dialogue
             Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(true));
+            SetTextDialog(dialogueSystem_OBJ.GetRandomServeDialogue(true));
+            //start Countdown to next customer
+
 
             RandomInitial();
         }
+
+        
+    }
+
+    public void BTN_Serve() { 
+        CheckOrder();
+        SetShouldShowDialogue(true);
+        moveControll_OBJ.MoveTo(StageEvent.Service_End);
     }
 
     public void TriggerEvent() { 
@@ -317,25 +408,17 @@ public class MainGameSystem : MonoBehaviour
     //method set apppearance according to customer type
 
 
-    //SO of Dialogue lines normal
-    //SO of Dialogue lines anamoly
+    public void ActiveUiDialog(bool active) {
+        DiaLogueUI.SetActive(active);
+    }
 
-    //SO of Dialogue lines served correctly
-    //SO of Dialogue lines served incorrectly
-    //SO of Dialogue lines Getout!! 
+    public void SetTextDialog(string str) { 
+        text_Dialogue.text = str;
+    }
 
-    //Customer GameObject Parts
+    public void CheckForEndGame() { }
 
-    //----Transfer to Character maker------ SO of Mask normal
-    //----Transfer to Character maker------ SO of Mask Anamoly
-
-    //----Transfer to Character maker------  of Body Female normal
-    //----Transfer to Character maker------  of Body Male normal
-    //----Transfer to Character maker------ of Body Female anamoly
-    //----Transfer to Character maker------ of Body Male anamoly
-
-    //SO of Scarf anamoly
-    //----Transfer to Character maker------ SO of Fox ears for anamoly
-    //----Transfer to Character maker------ SO of tail for anamoly
-    //----Transfer to Character maker------ SO of flame for anamoly
+    public void SetShouldShowDialogue(bool b) {
+        ShouldShowDialogue = b;
+    }
 }
