@@ -115,32 +115,63 @@ public class ImageSequenceButton : MonoBehaviour
     {
         if (!isReady) return;
 
-        // ตรวจสอบว่ายังมีรูปที่ต้องเปลี่ยนอีกไหม
-        if (currentIndex >= 0 && !mainGameSystem.IsHaveDoh)
+        if (mainGameSystem != null)
         {
-            clickCount++;
-            mainGameSystem.EnableBTNTopping(true);
-            mainGameSystem.IsHaveDoh = true;
-            // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
-            SetImageWhite(images[currentIndex]);
-
-            if (debugText != null)
-                debugText.text = $"กดครั้งที่ {clickCount}: รูปที่ {currentIndex + 1} เป็นสีขาว";
-
-            Debug.Log($"เปลี่ยนรูปที่ {currentIndex + 1} เป็นสีขาว");
-
-            // ลดค่า index เพื่อไปรูปถัดไป
-            currentIndex--;
-
-            // ถ้าเปลี่ยนครบทุกรูปแล้ว
-            if (currentIndex < 0)
+            // ตรวจสอบว่ายังมีรูปที่ต้องเปลี่ยนอีกไหม
+            if (currentIndex >= 0 && !mainGameSystem.IsHaveDoh)
             {
-                if (debugText != null)
-                    debugText.text = "เสร็จสิ้น! กดครบทั้งหมดแล้ว";
+                clickCount++;
+                mainGameSystem.EnableBTNTopping(true);
+                mainGameSystem.IsHaveDoh = true;
+                // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
+                SetImageWhite(images[currentIndex]);
 
-                Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
-                mainButton.interactable = false;
-                isReady = false;
+                if (debugText != null)
+                    debugText.text = $"กดครั้งที่ {clickCount}: รูปที่ {currentIndex + 1} เป็นสีขาว";
+
+                Debug.Log($"เปลี่ยนรูปที่ {currentIndex + 1} เป็นสีขาว");
+
+                // ลดค่า index เพื่อไปรูปถัดไป
+                currentIndex--;
+
+                // ถ้าเปลี่ยนครบทุกรูปแล้ว
+                if (currentIndex < 0)
+                {
+                    if (debugText != null)
+                        debugText.text = "เสร็จสิ้น! กดครบทั้งหมดแล้ว";
+
+                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
+                    mainButton.interactable = false;
+                    isReady = false;
+                }
+            }
+        }
+        else {
+            // ตรวจสอบว่ายังมีรูปที่ต้องเปลี่ยนอีกไหม
+            if (currentIndex >= 0)
+            {
+                clickCount++;
+                // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
+                SetImageWhite(images[currentIndex]);
+
+                if (debugText != null)
+                    debugText.text = $"กดครั้งที่ {clickCount}: รูปที่ {currentIndex + 1} เป็นสีขาว";
+
+                Debug.Log($"เปลี่ยนรูปที่ {currentIndex + 1} เป็นสีขาว");
+
+                // ลดค่า index เพื่อไปรูปถัดไป
+                currentIndex--;
+
+                // ถ้าเปลี่ยนครบทุกรูปแล้ว
+                if (currentIndex < 0)
+                {
+                    if (debugText != null)
+                        debugText.text = "เสร็จสิ้น! กดครบทั้งหมดแล้ว";
+
+                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
+                    mainButton.interactable = false;
+                    isReady = false;
+                }
             }
         }
     }

@@ -21,7 +21,11 @@ public class MainGameSystem : MonoBehaviour
     public Button btn_Seaweed;
     public Button btn_Mayonnaise;
 
+    [Header("Doh")]
     private bool _isHaveDoh = false;
+    public int currentDohBarral = 3;
+    public ImageSequenceButton takoyaki;
+
     public bool IsHaveDoh
     {
         get { return _isHaveDoh; }
@@ -47,6 +51,7 @@ public class MainGameSystem : MonoBehaviour
     public bool ShouldRandomNewOrder = false;
     public bool ShouldShowDialogue = false;
     public bool ShouldGetCustomerOut = false;
+    public bool IsPossessed = false;
 
     [Space(5)]
 
@@ -421,6 +426,21 @@ public class MainGameSystem : MonoBehaviour
     public void TriggerEvent()
     {
         // Implementation needed
+    }
+
+    public void CheckGameEnd() {
+        if (currentDohBarral <= 0 && takoyaki.clickCount == 3)
+        {
+            Debug.Log("Game Ended : All Done");
+        }
+        else if (FailConut > 3 && !IsPossessed)
+        {
+            Debug.Log("Game Ended : Too Many Failures");
+        }
+        else if (IsPossessed) {
+            Debug.Log("Game Ended : You be Possesed");
+        }
+
     }
 
     public string GetState()
