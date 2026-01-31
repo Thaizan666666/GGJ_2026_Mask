@@ -2,6 +2,7 @@ using NUnit.Framework.Constraints;
 using System.IO.Compression;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -10,8 +11,22 @@ public class MainGameSystem : MonoBehaviour
     [Header("Game Object")]
     public S_Topping target_Topping;
     public S_Topping Current_Topping;
-
     public CharacterMaker character_OBJ;
+
+    [Header("BTN")]
+    public Button btn_serve;
+
+    public Button btn_makeCustomerOut;
+    public Button btn_Katsuobushi;
+    public Button btn_Seaweed;
+    public Button btn_Mayonnaise;
+
+    private bool _isHaveDoh = false;
+    public bool IsHaveDoh
+    {
+        get { return _isHaveDoh; }
+        set { _isHaveDoh = value; }
+    }
 
     [Header("MoveControll")]
     public MoveControll moveControll_OBJ;
@@ -25,8 +40,6 @@ public class MainGameSystem : MonoBehaviour
     public float timetoShowDialogue = 3.0f;
     private float timeProgress = 0.0f;
     private bool shouldCountTime = false;
-
-    [Header("Cool Down")]
 
     [Space(5)]
 
@@ -47,13 +60,17 @@ public class MainGameSystem : MonoBehaviour
     [SerializeField]
     private int FailConut = 0;
 
+    // Cache for optimization
+    private StageEvent currentStage;
+    private bool isMovementComplete;
+    private bool isLeftButtonPressed;
+
     private void Awake()
     {
         CustomerType = E_CharacterType.Normal;
         CustomerCount = 0;
         DuplicateCount = 0;
         FailConut = 0;
-        
     }
 
     private void Start()
@@ -64,96 +81,140 @@ public class MainGameSystem : MonoBehaviour
 
     private void Update()
     {
-        if(shouldCountTime)
+        // Cache frequently accessed values
+        currentStage = moveControll_OBJ.stageEvent;
+        isMovementComplete = moveControll_OBJ.IsMovementComplete();
+        isLeftButtonPressed = Mouse.current.leftButton.wasPressedThisFrame;
+
+        HandleDialogueTimer();
+        HandleStageTransitions();
+    }
+
+    private void HandleDialogueTimer()
+    {
+        if (!shouldCountTime) return;
+
+        timeProgress += Time.deltaTime;
+
+        // Manual close (after 2 seconds)
+        if (timeProgress >= 2 && isLeftButtonPressed)
         {
-            timeProgress += Time.deltaTime;
-            if (timeProgress >= 2 && Mouse.current.leftButton.wasPressedThisFrame && moveControll_OBJ.stageEvent == StageEvent.Service_End)
+            CloseDialogue();
+
+            if (currentStage == StageEvent.Service_End)
             {
-                // change to customer exit
                 moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
-                timeProgress = 0.0f;
-                shouldCountTime = false;
-                ActiveUiDialog(false);
             }
-            else if (timeProgress >= 2 && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                //manual close dialogue
-                timeProgress = 0.0f;
-                shouldCountTime = false;
-                ActiveUiDialog(false);
-            }
-            
-            if (moveControll_OBJ.stageEvent == StageEvent.Service_End && timeProgress >= timetoShowDialogue)
-            {
-                // change to customer exit
-                moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
-                timeProgress = 0.0f;
-                shouldCountTime = false;
-                ActiveUiDialog(false);
-            }
-            else if (timeProgress >= timetoShowDialogue)
-            {
-                //for only closing dialogue
-                timeProgress = 0.0f;
-                shouldCountTime = false;
-                ActiveUiDialog(false);
-            }
-            
+            return;
         }
 
-        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && moveControll_OBJ.IsMovementComplete()) {
+        // Auto close
+        if (timeProgress >= timetoShowDialogue)
+        {
+            CloseDialogue();
+
+            if (currentStage == StageEvent.Service_End)
+            {
+                moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
+            }
+        }
+    }
+
+    private void HandleStageTransitions()
+    {
+        switch (currentStage)
+        {
+            case StageEvent.Customer_Enter:
+                HandleCustomerEnter();
+                break;
+
+            case StageEvent.Service_Start:
+                
+                if (!CanMakeOrder)
+                {
+                    CanMakeOrder = true;
+                }
+                break;
+
+            case StageEvent.Service_End:
+                HandleServiceEnd();
+                break;
+
+            case StageEvent.WarpToStartPoint:
+                if (isMovementComplete)
+                {
+                    PrepareNewCustomer();
+                    moveControll_OBJ.MoveTo(StageEvent.Customer_Enter);
+                }
+                break;
+
+            case StageEvent.Customer_Exit:
+                CanMakeOrder = false;
+                if (isMovementComplete && !shouldCountTime)
+                {
+                    moveControll_OBJ.MoveTo(StageEvent.WarpToStartPoint);
+                }
+                break;
+        }
+    }
+
+    private void HandleCustomerEnter()
+    {
+        if (ShouldRandomNewOrder)
+        {
+            PrepareNewCustomer();
+            ShouldRandomNewOrder = false;
+            return;
+        }
+
+        if (isMovementComplete)
+        {
             RandomTargetTopping();
-            ActiveUiDialog(true);
-            shouldCountTime = true;
-            SetTextDialog(GetOrder());
-            
+            ShowDialogue(GetOrder());
             moveControll_OBJ.stageEvent = StageEvent.Service_Start;
         }
+    }
 
-        if (moveControll_OBJ.stageEvent == StageEvent.Service_Start && !CanMakeOrder){
-            CanMakeOrder = true;
-        }
-
-        if (moveControll_OBJ.stageEvent == StageEvent.Service_End && ShouldShowDialogue) 
+    private void HandleServiceEnd()
+    {
+        if (ShouldShowDialogue)
         {
             ShouldRandomNewOrder = true;
             FailCheck();
-            ActiveUiDialog(true);
-            shouldCountTime = true;
+            ShowDialogue(text_Dialogue.text); // Text already set by CheckOrder
             ShouldShowDialogue = false;
         }
 
-        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && ShouldRandomNewOrder) {
-            ActiveUiDialog(false);
-            RandomInitial();
-            ShouldRandomNewOrder = false;
-            character_OBJ.RandomSpriteSet();
-        }
-
-        if (moveControll_OBJ.stageEvent == StageEvent.WarpToStartPoint && moveControll_OBJ.IsMovementComplete())
+        if (ShouldGetCustomerOut)
         {
-            RandomInitial();
-            character_OBJ.RandomSpriteSet();
-            moveControll_OBJ.MoveTo(StageEvent.Customer_Enter);
-        }
-
-        if (moveControll_OBJ.stageEvent == StageEvent.Customer_Exit && moveControll_OBJ.IsMovementComplete() && !shouldCountTime) 
-        { 
-            moveControll_OBJ.MoveTo(StageEvent.WarpToStartPoint);
-        }
-
-        if (moveControll_OBJ.stageEvent == StageEvent.Service_End && ShouldGetCustomerOut)
-        { 
             moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
-            ShouldGetCustomerOut = false;   
+            ShouldGetCustomerOut = false;
         }
-        
-
-
-
     }
 
-    public bool FailCheck() { 
+    private void PrepareNewCustomer()
+    {
+        ActiveUiDialog(false);
+        RandomInitial();
+        character_OBJ.RandomSpriteSet();
+    }
+
+    private void ShowDialogue(string message)
+    {
+        SetTextDialog(message);
+        ActiveUiDialog(true);
+        shouldCountTime = true;
+    }
+
+    private void CloseDialogue()
+    {
+        timeProgress = 0.0f;
+        shouldCountTime = false;
+        ActiveUiDialog(false);
+    }
+
+    public bool FailCheck()
+    {
         return FailConut >= 3;
     }
 
@@ -165,7 +226,6 @@ public class MainGameSystem : MonoBehaviour
             FailConut += 3;
             return false;
         }
-        // Normal customer check
         return CheckOrderMatch();
     }
 
@@ -210,55 +270,53 @@ public class MainGameSystem : MonoBehaviour
         Current_Topping.ResetTopping();
     }
 
-    public void RandomTargetTopping() {
+    public void RandomTargetTopping()
+    {
         Current_Topping.ResetTopping();
         int rand = Random.Range(1, 8);
 
         dialogueSystem_OBJ.OrderDialogue = dialogueSystem_OBJ.dialogueOrder.orders[rand - 1];
 
+        // Reset all to false first
+        target_Topping.Katsuobushi = false;
+        target_Topping.Seaweed = false;
+        target_Topping.Mayonnaise = false;
+
+        // Set based on pattern
         switch (rand)
         {
-            case 1:
+            case 1: // All toppings
                 target_Topping.Katsuobushi = true;
                 target_Topping.Seaweed = true;
                 target_Topping.Mayonnaise = true;
                 break;
-            case 2:
-                target_Topping.Katsuobushi = false;
+            case 2: // Seaweed + Mayo
                 target_Topping.Seaweed = true;
                 target_Topping.Mayonnaise = true;
                 break;
-            case 3:
-                target_Topping.Katsuobushi = false;
-                target_Topping.Mayonnaise = false;
+            case 3: // Seaweed only
                 target_Topping.Seaweed = true;
                 break;
-            case 4:
+            case 4: // Katsuobushi + Mayo
                 target_Topping.Katsuobushi = true;
-                target_Topping.Seaweed = false;
                 target_Topping.Mayonnaise = true;
                 break;
-            case 5:
+            case 5: // Katsuobushi + Seaweed
                 target_Topping.Katsuobushi = true;
                 target_Topping.Seaweed = true;
-                target_Topping.Mayonnaise = false;
                 break;
-            case 6:
+            case 6: // Katsuobushi only
                 target_Topping.Katsuobushi = true;
-                target_Topping.Seaweed = false;
-                target_Topping.Mayonnaise = false;
                 break;
-            case 7:
-                target_Topping.Katsuobushi = false;
+            case 7: // Seaweed only (duplicate of case 3)
                 target_Topping.Seaweed = true;
-                target_Topping.Mayonnaise = false;
                 break;
         }
     }
 
     public void RandomCustomer()
     {
-        //for first customer should be normal
+        // First customer is always normal
         if (CustomerCount == 0)
         {
             CustomerType = E_CharacterType.Normal;
@@ -267,158 +325,168 @@ public class MainGameSystem : MonoBehaviour
             return;
         }
 
-        //random customer type
         E_CharacterType previousType = CustomerType;
+        E_CharacterType[] availableTypes = GetAvailableCustomerTypes();
 
-        // If duplicate count exceeds 2, force a different customer type
+        // Force different type if too many duplicates
         if (DuplicateCount >= 2)
         {
-            E_CharacterType[] allTypes;
-
-            if (!ForceTwoType)
-                allTypes = (E_CharacterType[])System.Enum.GetValues(typeof(E_CharacterType));
-            else
-                allTypes = new E_CharacterType[] { E_CharacterType.Normal, E_CharacterType.Anamoly };
-
-            // Create a list excluding the current type
-            System.Collections.Generic.List<E_CharacterType> availableTypes = new System.Collections.Generic.List<E_CharacterType>();
-            foreach (E_CharacterType type in allTypes)
-            {
-                if (type != CustomerType)
-                {
-                    availableTypes.Add(type);
-                }
-            }
-
-            // Select random from available types
-            int rand = Random.Range(0, availableTypes.Count);
-            CustomerType = availableTypes[rand];
+            CustomerType = SelectDifferentType(availableTypes, CustomerType);
             DuplicateCount = 0;
         }
         else
         {
-            // Random selection from all types
-            E_CharacterType[] allTypes;
+            // Random selection
+            int rand = Random.Range(0, availableTypes.Length);
+            CustomerType = availableTypes[rand];
 
-            if (!ForceTwoType)
-                allTypes = (E_CharacterType[])System.Enum.GetValues(typeof(E_CharacterType));
-            else
-                allTypes = new E_CharacterType[] { E_CharacterType.Normal, E_CharacterType.Anamoly };
-
-            int rand = Random.Range(0, allTypes.Length);
-            CustomerType = allTypes[rand];
-
-            //check if new customer type same as previous
-            if (CustomerType == previousType)
-            {
-                //increase duplicate count
-                DuplicateCount++;
-            }
-            else
-            {
-                //reset duplicate count when type changes
-                DuplicateCount = 0;
-            }
+            // Update duplicate count
+            DuplicateCount = (CustomerType == previousType) ? DuplicateCount + 1 : 0;
         }
-        
     }
 
-    public string GetOrder() {
-        string order = "Order: ";
-
-        if (CustomerType == E_CharacterType.Normal)
-        {
-            order += dialogueSystem_OBJ.GetRandomOrder(E_CharacterType.Normal);
-        }
-
-        if (CustomerType == E_CharacterType.Anamoly)
-        {
-            order += dialogueSystem_OBJ.GetRandomOrder(E_CharacterType.Anamoly);
-        }
-        order += " ";
-        order += dialogueSystem_OBJ.OrderDialogue;
-
-        return order;
+    private E_CharacterType[] GetAvailableCustomerTypes()
+    {
+        if (!ForceTwoType)
+            return (E_CharacterType[])System.Enum.GetValues(typeof(E_CharacterType));
+        else
+            return new E_CharacterType[] { E_CharacterType.Normal, E_CharacterType.Anamoly };
     }
 
-    public void BTN_MakeCustomerOut() {
+    private E_CharacterType SelectDifferentType(E_CharacterType[] allTypes, E_CharacterType excludeType)
+    {
+        System.Collections.Generic.List<E_CharacterType> availableTypes = new System.Collections.Generic.List<E_CharacterType>();
+        foreach (E_CharacterType type in allTypes)
+        {
+            if (type != excludeType)
+            {
+                availableTypes.Add(type);
+            }
+        }
+
+        int rand = Random.Range(0, availableTypes.Count);
+        return availableTypes[rand];
+    }
+
+    public string GetOrder()
+    {
+        string characterDialogue = dialogueSystem_OBJ.GetRandomOrder(CustomerType);
+        return "Order: " + characterDialogue + " " + dialogueSystem_OBJ.OrderDialogue;
+    }
+
+    public void BTN_MakeCustomerOut()
+    {
+        //RandomInitial();
         if (CheckShouldMakeCustomerOut())
         {
-            moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
             Debug.Log("Get out!!");
             ShouldGetCustomerOut = true;
+            moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
         }
-        else {
-            moveControll_OBJ.MoveTo(StageEvent.Service_End);
-            ShouldShowDialogue = true;
+        else
+        {
+            Debug.Log("You can't make that customer out");
             text_Dialogue.text = dialogueSystem_OBJ.GetRandomGetoutDialogue();
             Debug.Log(dialogueSystem_OBJ.GetRandomGetoutDialogue());
-            Debug.Log("You can't make that customer out");
+            ShouldGetCustomerOut = false;
+            ShouldShowDialogue = true;
+            moveControll_OBJ.MoveTo(StageEvent.Service_End);
+        }
+    }
+
+    public void CheckOrder()
+    {
+        bool orderCorrect = CheckOrderShouldServe();
+        string dialogueText = dialogueSystem_OBJ.GetRandomServeDialogue(orderCorrect);
+
+        Debug.Log(dialogueText);
+        SetTextDialog(dialogueText);
+
+        if (!orderCorrect)
+        {
+            FailConut++;
         }
 
         RandomInitial();
     }
 
-    public void CheckOrder()
+    public void BTN_Serve()
     {
-
-        if (!CheckOrderShouldServe())
-        {
-            //get wrong serve dialogue
-            Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(false));
-            SetTextDialog(dialogueSystem_OBJ.GetRandomServeDialogue(false));
-            ActiveUiDialog(true);
-
-            FailConut++;
-            //Debug.Log("No no no");
-            RandomInitial();
-        }
-        else
-        {
-            //get right serve dialogue
-            Debug.Log(dialogueSystem_OBJ.GetRandomServeDialogue(true));
-            SetTextDialog(dialogueSystem_OBJ.GetRandomServeDialogue(true));
-            //start Countdown to next customer
-
-
-            RandomInitial();
-        }
-
-        
-    }
-
-    public void BTN_Serve() { 
         CheckOrder();
         SetShouldShowDialogue(true);
+        IsHaveDoh = false;
         moveControll_OBJ.MoveTo(StageEvent.Service_End);
     }
 
-    public void TriggerEvent() { 
-        
-    }
-
-    public void  EnableToppingButton() { 
-        
+    public void TriggerEvent()
+    {
+        // Implementation needed
     }
 
     public string GetState()
     {
         return "Customer Type: " + CustomerType.ToString() + ", Fail Count: " + FailConut.ToString();
     }
-    //method set apppearance according to customer type
 
-
-    public void ActiveUiDialog(bool active) {
+    public void ActiveUiDialog(bool active)
+    {
         DiaLogueUI.SetActive(active);
     }
 
-    public void SetTextDialog(string str) { 
+    public void SetTextDialog(string str)
+    {
         text_Dialogue.text = str;
     }
 
-    public void CheckForEndGame() { }
+    public void CheckForEndGame()
+    {
+        // Implementation needed
+    }
 
-    public void SetShouldShowDialogue(bool b) {
+    public void SetShouldShowDialogue(bool b)
+    {
         ShouldShowDialogue = b;
     }
+
+    public void SetKatsuobushi(bool b)
+    {
+        if (_isHaveDoh)
+        {
+            Current_Topping.Katsuobushi = b;
+            btn_Katsuobushi.interactable = false;
+        }
+    }
+
+    public void SetSeaweed(bool b)
+    {
+        if (_isHaveDoh)
+        {
+            Current_Topping.Seaweed = b;
+            btn_Seaweed.interactable = false;
+        }
+    }
+
+    public void SetMayonnaise(bool b)
+    {
+        if (_isHaveDoh)
+        {
+            Current_Topping.Mayonnaise = b;
+            btn_Mayonnaise.interactable = false;
+        }
+    }
+
+    public void EnableBTNTopping(bool b) { 
+        if (b)
+        {
+            btn_Katsuobushi.interactable = true;
+            btn_Seaweed.interactable = true;
+            btn_Mayonnaise.interactable = true;
+        }
+        else
+        {
+            btn_Katsuobushi.interactable = false;
+            btn_Seaweed.interactable = false;
+            btn_Mayonnaise.interactable = false;
+        }
+    }   
 }
