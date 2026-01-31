@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public enum StageEvent
 {
-    None,
+    None = 0,
     Customer_Enter,
     Customer_Exit,
     Service_Start,
@@ -161,6 +161,11 @@ public class MoveControll : MonoBehaviour
     private void OnMovementComplete()
     {
         Debug.Log($"Movement complete for stage: {stageEvent}");
+    }
+
+    public void SetStagToEndService() { 
+        
+        stageEvent = StageEvent.Service_End;
     }
 
     public void MoveTo(StageEvent stg)

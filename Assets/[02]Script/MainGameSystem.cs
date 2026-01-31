@@ -19,6 +19,7 @@ public class MainGameSystem : MonoBehaviour
 
     public bool CanMakeOrder = false;
     public bool ShouldRandomNewOrder = false;
+    public bool ShouldShowDialogue = false;
 
     private bool ForceTwoType = true;
     [SerializeField]
@@ -58,9 +59,13 @@ public class MainGameSystem : MonoBehaviour
             CanMakeOrder = true;
         }
 
-        if (moveControll_OBJ.stageEvent == StageEvent.Service_End) 
+        if (moveControll_OBJ.stageEvent == StageEvent.Service_End && ShouldShowDialogue) 
         {
             ShouldRandomNewOrder = true;
+
+
+
+            ShouldShowDialogue = false;
         }
 
         if (moveControll_OBJ.stageEvent == StageEvent.Customer_Enter && ShouldRandomNewOrder) {
@@ -135,38 +140,38 @@ public class MainGameSystem : MonoBehaviour
         {
             case 1:
                 target_Topping.Katsuobushi = true;
-                target_Topping.Seaweed = false;
-                target_Topping.Mayonnaise = false;
+                target_Topping.Seaweed = true;
+                target_Topping.Mayonnaise = true;
                 break;
             case 2:
                 target_Topping.Katsuobushi = false;
                 target_Topping.Seaweed = true;
-                target_Topping.Mayonnaise = false;
+                target_Topping.Mayonnaise = true;
                 break;
             case 3:
                 target_Topping.Katsuobushi = false;
-                target_Topping.Mayonnaise = true;
-                target_Topping.Seaweed = false;
+                target_Topping.Mayonnaise = false;
+                target_Topping.Seaweed = true;
                 break;
             case 4:
+                target_Topping.Katsuobushi = true;
+                target_Topping.Seaweed = false;
+                target_Topping.Mayonnaise = true;
+                break;
+            case 5:
                 target_Topping.Katsuobushi = true;
                 target_Topping.Seaweed = true;
                 target_Topping.Mayonnaise = false;
                 break;
-            case 5:
+            case 6:
                 target_Topping.Katsuobushi = true;
                 target_Topping.Seaweed = false;
-                target_Topping.Mayonnaise = true;
-                break;
-            case 6:
-                target_Topping.Katsuobushi = false;
-                target_Topping.Seaweed = true;
-                target_Topping.Mayonnaise = true;
+                target_Topping.Mayonnaise = false;
                 break;
             case 7:
-                target_Topping.Katsuobushi = true;
+                target_Topping.Katsuobushi = false;
                 target_Topping.Seaweed = true;
-                target_Topping.Mayonnaise = true;
+                target_Topping.Mayonnaise = false;
                 break;
         }
     }
