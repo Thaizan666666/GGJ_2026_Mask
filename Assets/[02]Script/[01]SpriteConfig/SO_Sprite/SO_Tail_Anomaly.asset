@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_Tail_Anomaly
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: fdf09fbfd32e83447a7d625b8dcb8174, type: 3}
-      Value: {fileID: 21300000, guid: 7d65a2b9ae6407f4a9089113618bd33e, type: 3}
-    - Key: {fileID: 21300000, guid: 25d61f356bb94b342827a0976cddcef6, type: 3}
-      Value: {fileID: 21300000, guid: a7a2893f9e1c0474e8aebd8c9e192d33, type: 3}
+    - Key: {fileID: 21300000, guid: 57afdf7edb951df459e153fafb92166a, type: 3}
+      Value: {fileID: 0}
+    - Key: {fileID: 21300000, guid: 499ad80a186d53b4ca1b7caf3e431dce, type: 3}
+      Value: {fileID: 0}

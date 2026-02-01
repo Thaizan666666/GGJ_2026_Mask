@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_FemaleBody_Anomaly
   sprites:
     _serializedList:
-    - Key: {fileID: 21300000, guid: c6f4a5f70fc85fe40b3a014093d1d946, type: 3}
-      Value: {fileID: 21300000, guid: 536ae96799fc45044aa44727962f86fb, type: 3}
+    - Key: {fileID: 21300000, guid: a36dadb6a34d2b54ea5df376896471fe, type: 3}
+      Value: {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
+    - Key: {fileID: 21300000, guid: 945380c7181656b46b4b9c16e623709e, type: 3}
+      Value: {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
+    - Key: {fileID: 21300000, guid: f87d21f5f7cba60468d715a8e6f166c6, type: 3}
+      Value: {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
