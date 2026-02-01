@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class MainManu : MonoBehaviour
 {
-    public float count = 2f;
-    public float delay;
-    public bool Isstarted = false;
-    public bool Isgone = false;
-    public bool IsReadyCount = false;
+    public float count = 3f;
+    private float delay;
+    private bool Isstarted = false;
+    private bool Isgone = false;
+    private bool IsReadyCount = false;
     public int ReadyCount = 0;
     public Material targetMaterial;
     public float Blur;
@@ -38,6 +38,10 @@ public class MainManu : MonoBehaviour
         targetMaterial.SetFloat("_BlurAmount", 0.005f);
         SceneManager.LoadScene(0);
     }
+    private void Start()
+    {
+        targetMaterial.SetFloat("_BlurAmount", 0.005f);
+    }
     private void Update()
     {
         if (Isstarted)
@@ -48,7 +52,7 @@ public class MainManu : MonoBehaviour
                 Color imageColor = image.color;
                 if (imageColor.a > 0)
                 {
-                    imageColor.a -= Time.deltaTime;
+                    imageColor.a -= Time.deltaTime*0.5f;
                     if (imageColor.a < 0) imageColor.a = 0; // ไม่ให้ติดลบ
                     image.color = imageColor;
                 }
