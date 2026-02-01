@@ -31,12 +31,25 @@ public class MainManu : MonoBehaviour
     }
     public void Gameover()
     {
-        SceneManager.LoadScene(2);
+        //SceneManager.LoadScene(2);
     }
+
+    public void GameOverGoodEnd() {
+        //SceneManager.LoadScene(2);
+    }
+
+    public void GameOverSeneLoad(int i) {
+        SceneManager.LoadScene(i);
+    }
+
+    public void GameOverSeneLoad(string str) {
+        SceneManager.LoadScene(str);
+    }
+
     public void SceneMainManu()
     {
         targetMaterial.SetFloat("_BlurAmount", 0.005f);
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
     }
     private void Start()
     {

@@ -224,13 +224,25 @@ public class CharacterMaker : MonoBehaviour
             Sprite wetBody = null;
             if (CharGender == Gender.Male)
             {
-                if (!MaleBody_Normal_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody))
+                if (MGS.CustomerType == E_CharacterType.Anamoly)
+                {
                     MaleBody_Anamoly_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody);
+                }
+                else
+                {
+                    MaleBody_Normal_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody);
+                }
             }
             else if (CharGender == Gender.Female)
             {
-                if (!FemaleBody_Normal_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody))
+                if (MGS.CustomerType == E_CharacterType.Anamoly)
+                {
                     FemaleBody_Anamoly_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody);
+                }
+                else
+                {
+                    FemaleBody_Normal_SO.sprites.TryGetValue(SpriteRenderer_Body.sprite, out wetBody);
+                }
             }
             SpriteRenderer_Body.sprite = wetBody ?? SpriteRenderer_Body.sprite;
         }
@@ -240,11 +252,13 @@ public class CharacterMaker : MonoBehaviour
             Sprite wetMask = null;
             if (CharGender == Gender.Male)
             {
+                // Try both normal and anomaly since mask can come from either
                 if (!Mask_Normal_M_SO.sprites.TryGetValue(SpriteRenderer_Mask.sprite, out wetMask))
                     Mask_Anamoly_M_SO.sprites.TryGetValue(SpriteRenderer_Mask.sprite, out wetMask);
             }
             else if (CharGender == Gender.Female)
             {
+                // Try both normal and anomaly since mask can come from either
                 if (!Mask_Normal_F_SO.sprites.TryGetValue(SpriteRenderer_Mask.sprite, out wetMask))
                     Mask_Anamoly_F_SO.sprites.TryGetValue(SpriteRenderer_Mask.sprite, out wetMask);
             }
@@ -256,30 +270,22 @@ public class CharacterMaker : MonoBehaviour
             Sprite wetFoxEar = null;
             if (CharGender == Gender.Male)
             {
-                if (!FoxEar_M_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar))
+                // Try both normal and anomaly since fox ear can come from either
+                if (!FoxEar_M_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar))   
                     FoxEar_M_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
             }
             else if (CharGender == Gender.Female)
             {
+                // Try both normal and anomaly since fox ear can come from either
                 if (!FoxEar_F_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar))
                     FoxEar_F_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
             }
             SpriteRenderer_FoxEar.sprite = wetFoxEar ?? SpriteRenderer_FoxEar.sprite;
         }
 
-        if (SpriteRenderer_Flame.sprite != null)
-        {
-            //Sprite wetFlame = null;
-            //Sprite wetFlame = null;
-            //// Flame only exists as anomaly, so only check anomaly SO
-            //Flame_Anamoly_SO.sprites.TryGetValue(SpriteRenderer_Flame.sprite, out wetFlame);
-            //SpriteRenderer_Flame.sprite = wetFlame ?? SpriteRenderer_Flame.sprite;
-        }
-
         if (SpriteRenderer_Tail.sprite != null)
         {
             Sprite wetTail = null;
-            // Tail only exists as anomaly, so only check anomaly SO
             Tail_Normal_SO.sprites.TryGetValue(SpriteRenderer_Tail.sprite, out wetTail);
             SpriteRenderer_Tail.sprite = wetTail ?? SpriteRenderer_Tail.sprite;
         }

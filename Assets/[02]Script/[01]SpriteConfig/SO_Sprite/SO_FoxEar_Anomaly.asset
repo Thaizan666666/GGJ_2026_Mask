@@ -15,4 +15,4 @@ MonoBehaviour:
   sprites:
     _serializedList:
     - Key: {fileID: 21300000, guid: a75d2339caf7cc94d98527f365f90c83, type: 3}
-      Value: {fileID: 21300000, guid: ab192b48a90ee884b9dff65ab476466a, type: 3}
+      Value: {fileID: 0}

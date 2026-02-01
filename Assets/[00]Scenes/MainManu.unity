@@ -750,6 +750,7 @@ GameObject:
   - component: {fileID: 1059271668}
   - component: {fileID: 1059271672}
   - component: {fileID: 1059271671}
+  - component: {fileID: 1059271673}
   m_Layer: 5
   m_Name: Button (Legacy)
   m_TagString: Untagged
@@ -838,7 +839,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -908,6 +909,18 @@ MonoBehaviour:
   DownBlur: 0.0005
   textblinkAlpha: {fileID: 2119312210}
   image: {fileID: 817341427}
+--- !u!114 &1059271673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059271666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d146e81dd5f2743adfcd49ee894aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeSceneManager
 --- !u!1 &1317915664
 GameObject:
   m_ObjectHideFlags: 0

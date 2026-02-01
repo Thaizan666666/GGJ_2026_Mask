@@ -14,7 +14,14 @@ public class MainGameSystem : MonoBehaviour
     public S_Topping Current_Topping;
     public CharacterMaker character_OBJ;
     public UpdateWarnPaper updateWarnPaper_OBJ;
+    [Space(5)]
 
+    [Header("Slash water")]
+    public GameObject SplashWater;
+
+    
+    public MainManu MM;
+    [Space(5)]
     public CanvasSliding CanvasSlide_GoodEnd;
     public CanvasSliding CanvasSlide_PossessedEnd;
     public CanvasSliding CanvasSlide_FailedEnd;
@@ -53,6 +60,10 @@ public class MainGameSystem : MonoBehaviour
     private bool shouldCountTime = false;
 
     [Space(5)]
+    private bool ShouldCountDownOpen = true;
+    private float Duration = 2f;
+
+    [Space(5)]
 
     public bool CanMakeOrder = false;
     public bool ShouldRandomNewOrder = false;
@@ -86,7 +97,7 @@ public class MainGameSystem : MonoBehaviour
         CustomerType = E_CharacterType.Normal;
         CustomerCount = 0;
         DuplicateCount = 0;
-        FailConut = 3;
+        FailConut = 0;
     }
 
     private void Start()
@@ -94,10 +105,22 @@ public class MainGameSystem : MonoBehaviour
         BTN_Game.interactable = false;
         RandomInitial();
         character_OBJ.RandomSpriteSet();
+
+        
     }
 
     private void Update()
     {
+        if (ShouldCountDownOpen) {
+            Duration -= Time.deltaTime;
+            if (Duration <= 0)
+            {
+                StartGame();
+                ShouldCountDownOpen = false;
+            }
+            return;
+        }
+
         if (IsgameEnd) return;
         // Cache frequently accessed values
         currentStage = moveControll_OBJ.stageEvent;
@@ -120,7 +143,7 @@ public class MainGameSystem : MonoBehaviour
         if (timeProgress >= 2 && isLeftButtonPressed)
         {
             CloseDialogue();
-
+            SplashWater.SetActive(false);
             if (currentStage == StageEvent.Service_End)
             {
                 moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
@@ -132,7 +155,7 @@ public class MainGameSystem : MonoBehaviour
         if (timeProgress >= timetoShowDialogue)
         {
             CloseDialogue();
-
+            SplashWater.SetActive(false);
             if (currentStage == StageEvent.Service_End)
             {
                 moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
@@ -162,6 +185,7 @@ public class MainGameSystem : MonoBehaviour
                 break;
 
             case StageEvent.WarpToStartPoint:
+                SplashWater.SetActive(false);
                 if (isMovementComplete)
                 {
                     PrepareNewCustomer();
@@ -199,6 +223,7 @@ public class MainGameSystem : MonoBehaviour
 
     public void StartGame() {
         moveControll_OBJ.MoveTo(StageEvent.Customer_Enter);
+
     }
 
     public void ResetGame()
@@ -219,6 +244,7 @@ public class MainGameSystem : MonoBehaviour
         if (ShouldGetCustomerOut)
         {
             moveControll_OBJ.MoveTo(StageEvent.Customer_Exit);
+            SplashWater.SetActive(false);
             ShouldGetCustomerOut = false;
         }
     }
@@ -241,6 +267,7 @@ public class MainGameSystem : MonoBehaviour
     {
         timeProgress = 0.0f;
         shouldCountTime = false;
+        SplashWater.SetActive(false);
         ActiveUiDialog(false);
     }
 
@@ -327,7 +354,7 @@ public class MainGameSystem : MonoBehaviour
                 target_Topping.Mayonnaise = true;
                 break;
             case 3: // Seaweed only
-                target_Topping.Seaweed = true;
+                target_Topping.Mayonnaise = true;
                 break;
             case 4: // Katsuobushi + Mayo
                 target_Topping.Katsuobushi = true;
@@ -409,6 +436,7 @@ public class MainGameSystem : MonoBehaviour
     public void BTN_MakeCustomerOut()
     {
         //RandomInitial();
+        SplashWater.SetActive(true);
         if (CheckShouldMakeCustomerOut())
         {
             Debug.Log("Get out!!");
@@ -458,24 +486,27 @@ public class MainGameSystem : MonoBehaviour
     }
 
     public void CheckGameEnd() {
-        if (currentDohBarral <= 0 && takoyaki.clickCount == 4)
+        if (currentDohBarral <= 0 && takoyaki.clickCount >= 4)
         {
             Debug.Log("Game Ended : All Done");
-            CanvasSlide_GoodEnd.TriggerSlideIn();
+            //CanvasSlide_GoodEnd.TriggerSlideIn();
+            MM.GameOverSeneLoad(2);
             EndByAllDone = true;
             IsgameEnd = true;
         }
         else if (FailConut > 3 && !EndByPossessed)
         {
             Debug.Log("Game Ended : Too Many Failures");
-            CanvasSlide_FailedEnd.TriggerSlideIn();
+            //CanvasSlide_FailedEnd.TriggerSlideIn();
+            MM.GameOverSeneLoad(4);
             EndByFailed = true;
             IsgameEnd = true;
         }
         else if (EndByPossessed)
         {
             Debug.Log("Game Ended : You be Possesed");
-            CanvasSlide_PossessedEnd.TriggerSlideIn();
+            //CanvasSlide_PossessedEnd.TriggerSlideIn();
+            MM.GameOverSeneLoad(3);
             IsgameEnd = true;
         }
         else {
