@@ -268,18 +268,25 @@ public class CharacterMaker : MonoBehaviour
         if (SpriteRenderer_FoxEar.sprite != null)
         {
             Sprite wetFoxEar = null;
+            bool found = false;
+
             if (CharGender == Gender.Male)
             {
-                // Try both normal and anomaly since fox ear can come from either
-                if (!FoxEar_M_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar))   
-                    FoxEar_M_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
+                // Try normal first
+                found = FoxEar_M_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
+                // If not found in normal, try anomaly
+                if (!found)
+                    found = FoxEar_M_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
             }
             else if (CharGender == Gender.Female)
             {
-                // Try both normal and anomaly since fox ear can come from either
-                if (!FoxEar_F_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar))
-                    FoxEar_F_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
+                // Try normal first
+                found = FoxEar_F_Normal_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
+                // If not found in normal, try anomaly
+                if (!found)
+                    found = FoxEar_F_Anomaly_SO.sprites.TryGetValue(SpriteRenderer_FoxEar.sprite, out wetFoxEar);
             }
+
             SpriteRenderer_FoxEar.sprite = wetFoxEar ?? SpriteRenderer_FoxEar.sprite;
         }
 
