@@ -27,15 +27,27 @@ public class MoveControll : MonoBehaviour
 
     [Header("Bobbing Animation Settings")]
     [SerializeField] private bool enableBobbing = true;
-    [SerializeField] private float bobbingSpeed = 1f;
     [SerializeField] private AnimationCurve bobbingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Stage-Specific Bobbing Amplitudes")]
-    [SerializeField] private float enterBobbingAmplitude = 0.08f; // While entering
-    [SerializeField] private float serviceStartAmplitude = 0.15f; // Mid amplitude
-    [SerializeField] private float serviceEndAmplitude = 0.05f; // Low amplitude
-    [SerializeField] private float exitBobbingAmplitude = 0.08f; // While exiting
-    [SerializeField] private float noneBobbingAmplitude = 0.02f; // Minimal bobbing when idle
+    [Header("Customer Enter - Bobbing Settings")]
+    [SerializeField] private float enterBobbingAmplitude = 0.08f;
+    [SerializeField] private float enterBobbingSpeed = 1f;
+
+    [Header("Service Start - Bobbing Settings")]
+    [SerializeField] private float serviceStartAmplitude = 0.15f;
+    [SerializeField] private float serviceStartSpeed = 1.2f;
+
+    [Header("Service End - Bobbing Settings")]
+    [SerializeField] private float serviceEndAmplitude = 0.05f;
+    [SerializeField] private float serviceEndSpeed = 0.8f;
+
+    [Header("Customer Exit - Bobbing Settings")]
+    [SerializeField] private float exitBobbingAmplitude = 0.08f;
+    [SerializeField] private float exitBobbingSpeed = 1f;
+
+    [Header("None/Idle - Bobbing Settings")]
+    [SerializeField] private float noneBobbingAmplitude = 0.02f;
+    [SerializeField] private float noneBobbingSpeed = 0.5f;
 
     // Movement tracking variables
     private bool isMoving = false;
@@ -47,6 +59,7 @@ public class MoveControll : MonoBehaviour
     // Bobbing tracking variables
     private float bobbingTime;
     private float currentBobbingAmplitude;
+    private float currentBobbingSpeed;
 
     private void Update()
     {
@@ -111,7 +124,7 @@ public class MoveControll : MonoBehaviour
 
     private void UpdateBobbing()
     {
-        bobbingTime += Time.deltaTime * bobbingSpeed;
+        bobbingTime += Time.deltaTime * currentBobbingSpeed;
 
         // Only apply bobbing when not moving
         if (!isMoving)
@@ -163,9 +176,11 @@ public class MoveControll : MonoBehaviour
         Debug.Log($"Movement complete for stage: {stageEvent}");
     }
 
-    public void SetStagToEndService() { 
-        
+    public void SetStagToEndService()
+    {
+
         stageEvent = StageEvent.Service_End;
+        SetBobbingForStage(StageEvent.Service_End);
     }
 
     public void MoveTo(StageEvent stg)
@@ -178,13 +193,15 @@ public class MoveControll : MonoBehaviour
 
         stageEvent = stg;
 
+        // Set bobbing amplitude and speed based on stage
+        SetBobbingForStage(stg);
+
         switch (stg)
         {
             case StageEvent.Customer_Enter:
                 // Move to service point with enter bobbing
                 if (ServicePoint != null)
                 {
-                    SetBobbingAmplitude(enterBobbingAmplitude);
                     StartMovement(ServicePoint.transform.position);
                 }
                 break;
@@ -193,7 +210,6 @@ public class MoveControll : MonoBehaviour
                 // Stay at service point with mid amplitude bobbing
                 if (ServicePoint != null)
                 {
-                    SetBobbingAmplitude(serviceStartAmplitude);
                     StopMovement();
                     Customer_Object.transform.position = ServicePoint.transform.position;
                 }
@@ -203,7 +219,6 @@ public class MoveControll : MonoBehaviour
                 // Stay at service point with low amplitude bobbing
                 if (ServicePoint != null)
                 {
-                    SetBobbingAmplitude(serviceEndAmplitude);
                     StopMovement();
                     Customer_Object.transform.position = ServicePoint.transform.position;
                 }
@@ -213,7 +228,6 @@ public class MoveControll : MonoBehaviour
                 // Move to exit point with exit bobbing
                 if (ExitPoint != null)
                 {
-                    SetBobbingAmplitude(exitBobbingAmplitude);
                     StartMovement(ExitPoint.transform.position);
                 }
                 break;
@@ -222,7 +236,6 @@ public class MoveControll : MonoBehaviour
                 // Instantly warp to start point
                 if (EnterPoint != null)
                 {
-                    SetBobbingAmplitude(noneBobbingAmplitude);
                     StopMovement();
                     Customer_Object.transform.position = EnterPoint.transform.position;
                     Debug.Log("Warped to start point");
@@ -231,8 +244,42 @@ public class MoveControll : MonoBehaviour
 
             case StageEvent.None:
                 // Minimal bobbing at current position
-                SetBobbingAmplitude(noneBobbingAmplitude);
                 StopMovement();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Sets the bobbing amplitude and speed based on the current stage
+    /// </summary>
+    private void SetBobbingForStage(StageEvent stg)
+    {
+        switch (stg)
+        {
+            case StageEvent.Customer_Enter:
+                SetBobbingAmplitude(enterBobbingAmplitude);
+                SetBobbingSpeed(enterBobbingSpeed);
+                break;
+
+            case StageEvent.Service_Start:
+                SetBobbingAmplitude(serviceStartAmplitude);
+                SetBobbingSpeed(serviceStartSpeed);
+                break;
+
+            case StageEvent.Service_End:
+                SetBobbingAmplitude(serviceEndAmplitude);
+                SetBobbingSpeed(serviceEndSpeed);
+                break;
+
+            case StageEvent.Customer_Exit:
+                SetBobbingAmplitude(exitBobbingAmplitude);
+                SetBobbingSpeed(exitBobbingSpeed);
+                break;
+
+            case StageEvent.WarpToStartPoint:
+            case StageEvent.None:
+                SetBobbingAmplitude(noneBobbingAmplitude);
+                SetBobbingSpeed(noneBobbingSpeed);
                 break;
         }
     }
@@ -330,6 +377,14 @@ public class MoveControll : MonoBehaviour
     }
 
     /// <summary>
+    /// Get current bobbing speed
+    /// </summary>
+    public float GetCurrentBobbingSpeed()
+    {
+        return currentBobbingSpeed;
+    }
+
+    /// <summary>
     /// Force complete current movement instantly
     /// </summary>
     public void ForceCompleteMovement()
@@ -370,7 +425,7 @@ public class MoveControll : MonoBehaviour
     /// </summary>
     public void SetBobbingSpeed(float speed)
     {
-        bobbingSpeed = Mathf.Max(0.1f, speed);
+        currentBobbingSpeed = Mathf.Max(0.1f, speed);
     }
 
     /// <summary>
@@ -379,5 +434,83 @@ public class MoveControll : MonoBehaviour
     public void SetBobbingEnabled(bool enabled)
     {
         enableBobbing = enabled;
+    }
+
+    /// <summary>
+    /// Get the bobbing amplitude for a specific stage
+    /// </summary>
+    public float GetStageBobbingAmplitude(StageEvent stg)
+    {
+        switch (stg)
+        {
+            case StageEvent.Customer_Enter: return enterBobbingAmplitude;
+            case StageEvent.Service_Start: return serviceStartAmplitude;
+            case StageEvent.Service_End: return serviceEndAmplitude;
+            case StageEvent.Customer_Exit: return exitBobbingAmplitude;
+            case StageEvent.WarpToStartPoint:
+            case StageEvent.None: return noneBobbingAmplitude;
+            default: return 0f;
+        }
+    }
+
+    /// <summary>
+    /// Get the bobbing speed for a specific stage
+    /// </summary>
+    public float GetStageBobbingSpeed(StageEvent stg)
+    {
+        switch (stg)
+        {
+            case StageEvent.Customer_Enter: return enterBobbingSpeed;
+            case StageEvent.Service_Start: return serviceStartSpeed;
+            case StageEvent.Service_End: return serviceEndSpeed;
+            case StageEvent.Customer_Exit: return exitBobbingSpeed;
+            case StageEvent.WarpToStartPoint:
+            case StageEvent.None: return noneBobbingSpeed;
+            default: return 1f;
+        }
+    }
+
+    /// <summary>
+    /// Set the bobbing amplitude for a specific stage
+    /// </summary>
+    public void SetStageBobbingAmplitude(StageEvent stg, float amplitude)
+    {
+        switch (stg)
+        {
+            case StageEvent.Customer_Enter: enterBobbingAmplitude = amplitude; break;
+            case StageEvent.Service_Start: serviceStartAmplitude = amplitude; break;
+            case StageEvent.Service_End: serviceEndAmplitude = amplitude; break;
+            case StageEvent.Customer_Exit: exitBobbingAmplitude = amplitude; break;
+            case StageEvent.WarpToStartPoint:
+            case StageEvent.None: noneBobbingAmplitude = amplitude; break;
+        }
+
+        // If we're currently in this stage, update the current values
+        if (stageEvent == stg)
+        {
+            SetBobbingAmplitude(amplitude);
+        }
+    }
+
+    /// <summary>
+    /// Set the bobbing speed for a specific stage
+    /// </summary>
+    public void SetStageBobbingSpeed(StageEvent stg, float speed)
+    {
+        switch (stg)
+        {
+            case StageEvent.Customer_Enter: enterBobbingSpeed = speed; break;
+            case StageEvent.Service_Start: serviceStartSpeed = speed; break;
+            case StageEvent.Service_End: serviceEndSpeed = speed; break;
+            case StageEvent.Customer_Exit: exitBobbingSpeed = speed; break;
+            case StageEvent.WarpToStartPoint:
+            case StageEvent.None: noneBobbingSpeed = speed; break;
+        }
+
+        // If we're currently in this stage, update the current values
+        if (stageEvent == stg)
+        {
+            SetBobbingSpeed(speed);
+        }
     }
 }

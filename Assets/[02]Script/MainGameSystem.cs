@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainGameSystem : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class MainGameSystem : MonoBehaviour
     public S_Topping Current_Topping;
     public CharacterMaker character_OBJ;
     public UpdateWarnPaper updateWarnPaper_OBJ;
+
+    public CanvasSliding CanvasSlide_GoodEnd;
+    public CanvasSliding CanvasSlide_PossessedEnd;
+    public CanvasSliding CanvasSlide_FailedEnd;
 
     [Header("BTN")]
     public CanvasGroup BTN_Game;
@@ -81,7 +86,7 @@ public class MainGameSystem : MonoBehaviour
         CustomerType = E_CharacterType.Normal;
         CustomerCount = 0;
         DuplicateCount = 0;
-        FailConut = 0;
+        FailConut = 3;
     }
 
     private void Start()
@@ -93,6 +98,7 @@ public class MainGameSystem : MonoBehaviour
 
     private void Update()
     {
+        if (IsgameEnd) return;
         // Cache frequently accessed values
         currentStage = moveControll_OBJ.stageEvent;
         isMovementComplete = moveControll_OBJ.IsMovementComplete();
@@ -143,6 +149,7 @@ public class MainGameSystem : MonoBehaviour
                 break;
 
             case StageEvent.Service_Start:
+                
                 BTN_Game.interactable = true;
                 if (!CanMakeOrder)
                 {
@@ -185,8 +192,18 @@ public class MainGameSystem : MonoBehaviour
         {
             RandomTargetTopping();
             ShowDialogue(GetOrder());
-            moveControll_OBJ.stageEvent = StageEvent.Service_Start;
+            moveControll_OBJ.MoveTo(StageEvent.Service_Start);
+            //moveControll_OBJ.stageEvent = StageEvent.Service_Start;
         }
+    }
+
+    public void StartGame() {
+        moveControll_OBJ.MoveTo(StageEvent.Customer_Enter);
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void HandleServiceEnd()
@@ -444,18 +461,21 @@ public class MainGameSystem : MonoBehaviour
         if (currentDohBarral <= 0 && takoyaki.clickCount == 4)
         {
             Debug.Log("Game Ended : All Done");
+            CanvasSlide_GoodEnd.TriggerSlideIn();
             EndByAllDone = true;
             IsgameEnd = true;
         }
         else if (FailConut > 3 && !EndByPossessed)
         {
             Debug.Log("Game Ended : Too Many Failures");
+            CanvasSlide_FailedEnd.TriggerSlideIn();
             EndByFailed = true;
             IsgameEnd = true;
         }
         else if (EndByPossessed)
         {
             Debug.Log("Game Ended : You be Possesed");
+            CanvasSlide_PossessedEnd.TriggerSlideIn();
             IsgameEnd = true;
         }
         else {
