@@ -13,6 +13,7 @@ public class ImageSequenceButton : MonoBehaviour
     [Header("Sprites")]
     public Sprite whiteSprite; // Sprite สีขาว
     public Sprite blackSprite; // Sprite สีดำ
+    public Sprite redSprite; // Sprite สีแดง
 
     [Header("Settings")]
     public float countdownTime = 5f;
@@ -21,6 +22,7 @@ public class ImageSequenceButton : MonoBehaviour
     [Header("Colors (ถ้าไม่ใช้ Sprite)")]
     public Color whiteColor = Color.white;
     public Color blackColor = Color.black;
+    public Color redColor = Color.red;
 
     // Time tracking variables
     private float countdownTimer = 0f;
@@ -29,6 +31,9 @@ public class ImageSequenceButton : MonoBehaviour
 
     private int currentIndex = 3; // เริ่มจากล่างสุด
     public int clickCount = 0;
+
+    // Track which images are in red state (nullified)
+    private bool[] imageIsRed;
 
     // Public properties for tracking
     public float TimeRemaining => Mathf.Max(0, countdownTimer);
@@ -41,6 +46,9 @@ public class ImageSequenceButton : MonoBehaviour
 
     void Start()
     {
+        // Initialize red state tracking array
+        imageIsRed = new bool[images.Length];
+
         // ตั้งค่าปุ่ม
         if (mainButton != null)
         {
@@ -123,8 +131,10 @@ public class ImageSequenceButton : MonoBehaviour
                 clickCount++;
                 mainGameSystem.EnableBTNTopping(true);
                 mainGameSystem.IsHaveDoh = true;
+
                 // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
                 SetImageWhite(images[currentIndex]);
+                SetImageRed(images[currentIndex], currentIndex);
 
                 if (debugText != null)
                     debugText.text = $"กดครั้งที่ {clickCount}: รูปที่ {currentIndex + 1} เป็นสีขาว";
@@ -137,22 +147,29 @@ public class ImageSequenceButton : MonoBehaviour
                 // ถ้าเปลี่ยนครบทุกรูปแล้ว
                 if (currentIndex < 0)
                 {
-                    if (debugText != null)
-                        debugText.text = "เสร็จสิ้น! กดครบทั้งหมดแล้ว";
+                    // เปลี่ยนทุกรูปเป็นสีแดงและ set เป็น null
+                    SetAllImagesRed();
 
-                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
+                    if (debugText != null)
+                        debugText.text = "เสร็จสิ้น! รอการรีเซ็ต";
+
+                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว! รูปถูกตั้งเป็น null");
                     mainButton.interactable = false;
                     isReady = false;
                 }
             }
         }
-        else {
+        else
+        {
             // ตรวจสอบว่ายังมีรูปที่ต้องเปลี่ยนอีกไหม
             if (currentIndex >= 0)
             {
                 clickCount++;
+
                 // เปลี่ยนรูปปัจจุบันเป็นสีขาว/Sprite ขาว
                 SetImageWhite(images[currentIndex]);
+
+                SetImageRed(images[currentIndex], currentIndex);
 
                 if (debugText != null)
                     debugText.text = $"กดครั้งที่ {clickCount}: รูปที่ {currentIndex + 1} เป็นสีขาว";
@@ -165,10 +182,13 @@ public class ImageSequenceButton : MonoBehaviour
                 // ถ้าเปลี่ยนครบทุกรูปแล้ว
                 if (currentIndex < 0)
                 {
-                    if (debugText != null)
-                        debugText.text = "เสร็จสิ้น! กดครบทั้งหมดแล้ว";
+                    // เปลี่ยนทุกรูปเป็นสีแดงและ set เป็น null
+                    SetAllImagesRed();
 
-                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว!");
+                    if (debugText != null)
+                        debugText.text = "เสร็จสิ้น! รอการรีเซ็ต";
+
+                    Debug.Log("เปลี่ยนครบทุกรูปแล้ว! รูปถูกตั้งเป็น null");
                     mainButton.interactable = false;
                     isReady = false;
                 }
@@ -206,21 +226,69 @@ public class ImageSequenceButton : MonoBehaviour
         }
     }
 
+    // ฟังก์ชันช่วยเปลี่ยนรูปเดียวเป็นสีแดง/Sprite แดง และ set GameObject เป็น null
+    void SetImageRed(Image img, int index)
+    {
+        if (img == null) return;
+
+        if (useSprites && redSprite != null)
+        {
+            img.sprite = redSprite;
+        }
+        else
+        {
+            img.color = redColor;
+        }
+
+        // Mark this image as red (nullified state)
+        imageIsRed[index] = true;
+
+        // Disable the image GameObject (effectively making it null/inactive)
+        img.gameObject.SetActive(false);
+
+        Debug.Log($"รูปที่ {index + 1} ถูกตั้งเป็นสีแดงและ GameObject ถูก disable");
+    }
+
     // ฟังก์ชันเปลี่ยนทุกรูปเป็นสีขาว/Sprite ขาว
     void SetAllImagesWhite()
     {
-        foreach (Image img in images)
+        for (int i = 0; i < images.Length; i++)
         {
-            SetImageWhite(img);
+            if (images[i] != null)
+            {
+                // Re-enable GameObject if it was disabled
+                if (!images[i].gameObject.activeSelf)
+                {
+                    images[i].gameObject.SetActive(true);
+                }
+
+                SetImageWhite(images[i]);
+                imageIsRed[i] = false;
+            }
         }
     }
 
     // ฟังก์ชันเปลี่ยนทุกรูปเป็นสีดำ/Sprite ดำ
     void SetAllImagesBlack()
     {
-        foreach (Image img in images)
+        for (int i = 0; i < images.Length; i++)
         {
-            SetImageBlack(img);
+            if (images[i] != null && !imageIsRed[i])
+            {
+                SetImageBlack(images[i]);
+            }
+        }
+    }
+
+    // ฟังก์ชันเปลี่ยนทุกรูปเป็นสีแดง/Sprite แดง และ set เป็น null
+    void SetAllImagesRed()
+    {
+        for (int i = 0; i < images.Length; i++)
+        {
+            if (images[i] != null)
+            {
+                SetImageRed(images[i], i);
+            }
         }
     }
 
@@ -230,6 +298,7 @@ public class ImageSequenceButton : MonoBehaviour
         currentIndex = 3;
         clickCount = 0;
 
+        // Reset all images to white and re-enable them
         SetAllImagesWhite();
 
         if (mainButton != null)
@@ -239,12 +308,22 @@ public class ImageSequenceButton : MonoBehaviour
             debugText.text = "";
 
         StartCountdown();
-        Debug.Log("Sequence reset!");
+        Debug.Log("Sequence reset! All images restored and set to white.");
     }
 
     // Helper method to get detailed time info
     public string GetTimeInfo()
     {
         return $"Time Remaining: {TimeRemaining:F2}s | Elapsed: {TimeElapsed:F2}s | Progress: {ProgressPercent:F1}%";
+    }
+
+    // Helper method to check if an image is in red state
+    public bool IsImageRed(int index)
+    {
+        if (index >= 0 && index < imageIsRed.Length)
+        {
+            return imageIsRed[index];
+        }
+        return false;
     }
 }

@@ -12,8 +12,10 @@ public class MainGameSystem : MonoBehaviour
     public S_Topping target_Topping;
     public S_Topping Current_Topping;
     public CharacterMaker character_OBJ;
+    public UpdateWarnPaper updateWarnPaper_OBJ;
 
     [Header("BTN")]
+    public CanvasGroup BTN_Game;
     public Button btn_serve;
 
     public Button btn_makeCustomerOut;
@@ -84,6 +86,7 @@ public class MainGameSystem : MonoBehaviour
 
     private void Start()
     {
+        BTN_Game.interactable = false;
         RandomInitial();
         character_OBJ.RandomSpriteSet();
     }
@@ -140,7 +143,7 @@ public class MainGameSystem : MonoBehaviour
                 break;
 
             case StageEvent.Service_Start:
-                
+                BTN_Game.interactable = true;
                 if (!CanMakeOrder)
                 {
                     CanMakeOrder = true;
@@ -405,6 +408,7 @@ public class MainGameSystem : MonoBehaviour
             moveControll_OBJ.MoveTo(StageEvent.Service_End);
         }
 
+        BTN_Game.interactable = false;
         CheckGameEnd();
     }
 
@@ -431,13 +435,9 @@ public class MainGameSystem : MonoBehaviour
         EnableBTNTopping(false);
         IsHaveDoh = false;
         moveControll_OBJ.MoveTo(StageEvent.Service_End);
-
+        BTN_Game.interactable = false;
         CheckGameEnd();
-    }
-
-    public void TriggerEvent()
-    {
-        // Implementation needed
+        
     }
 
     public void CheckGameEnd() {
@@ -453,9 +453,13 @@ public class MainGameSystem : MonoBehaviour
             EndByFailed = true;
             IsgameEnd = true;
         }
-        else if (EndByPossessed) {
+        else if (EndByPossessed)
+        {
             Debug.Log("Game Ended : You be Possesed");
             IsgameEnd = true;
+        }
+        else {
+            updateWarnPaper_OBJ.UpdateUiPaperwarn(FailConut);
         }
 
     }
