@@ -143,6 +143,7 @@ public class MainGameSystem : MonoBehaviour
                 break;
 
             case StageEvent.Service_Start:
+                
                 BTN_Game.interactable = true;
                 if (!CanMakeOrder)
                 {
@@ -185,7 +186,8 @@ public class MainGameSystem : MonoBehaviour
         {
             RandomTargetTopping();
             ShowDialogue(GetOrder());
-            moveControll_OBJ.stageEvent = StageEvent.Service_Start;
+            moveControll_OBJ.MoveTo(StageEvent.Service_Start);
+            //moveControll_OBJ.stageEvent = StageEvent.Service_Start;
         }
     }
 
