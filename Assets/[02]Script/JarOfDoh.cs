@@ -10,6 +10,7 @@ public class JarOfDoh : MonoBehaviour
     [Header("Doh Barrel Settings")]
     //public int currentDohBarrel = 3; // Starting amount
     public Sprite[] dohSprites; // Array of sprites for different barrel levels
+    public Sprite[] dohSpritesHi;
     private Image jarImage;
     private Button jarButton;
 
@@ -63,8 +64,9 @@ public class JarOfDoh : MonoBehaviour
         // If barrel is empty, disable this UI element
         if (MGS.currentDohBarral <= 0)
         {
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
             jarButton.interactable = false;
+            
             // Or alternatively just disable the button:
             // jarButton.interactable = false;
         }
@@ -78,6 +80,16 @@ public class JarOfDoh : MonoBehaviour
             // Clamp the index to valid range
             int spriteIndex = Mathf.Clamp(MGS.currentDohBarral, 0, dohSprites.Length - 1);
             jarImage.sprite = dohSprites[spriteIndex];
+        }
+        if (jarButton != null && dohSpritesHi != null && dohSpritesHi.Length > 0)
+        {
+            // Clamp the index to valid range
+            int spriteIndex = Mathf.Clamp(MGS.currentDohBarral, 0, dohSpritesHi.Length - 1);
+
+            // Create a temporary SpriteState, modify it, then assign it back
+            SpriteState spriteState = jarButton.spriteState;
+            spriteState.highlightedSprite = dohSpritesHi[spriteIndex];
+            jarButton.spriteState = spriteState;
         }
     }
 }
