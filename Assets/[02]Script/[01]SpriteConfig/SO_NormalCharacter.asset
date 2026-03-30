@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87411f3e0d68b6f4f8d446b9a9ed9d8d, type: 3}
+  m_Name: SO_NormalCharacter
+  m_EditorClassIdentifier: Assembly-CSharp::SO_NormalCharacter
+  normalFemale:
+    CharacterSprites:
+      _serializedList:
+      - Key: {fileID: 21300000, guid: a36dadb6a34d2b54ea5df376896471fe, type: 3}
+        Value: {fileID: 21300000, guid: 678b2058a7bb7d94ab8ab32f73e36a8f, type: 3}
+      - Key: {fileID: 21300000, guid: 945380c7181656b46b4b9c16e623709e, type: 3}
+        Value: {fileID: 21300000, guid: 37c05d26c7708af469f9a0973d4f0e65, type: 3}
+      - Key: {fileID: 21300000, guid: f87d21f5f7cba60468d715a8e6f166c6, type: 3}
+        Value: {fileID: 21300000, guid: 1797bb81d1793f6459b06a2787de9059, type: 3}
+    Masks:
+    - {fileID: 21300000, guid: a873a67353a87974f9a59daef028dc28, type: 3}
+    - {fileID: 21300000, guid: 60b54dbbe43422f419e36b0d58683b03, type: 3}
+    - {fileID: 21300000, guid: e88fac4dad149724ca3626b9e4646a51, type: 3}
+    - {fileID: 21300000, guid: 411b104dd8cb5f54fb3377da296088a3, type: 3}
+    - {fileID: 21300000, guid: 90a4d760c9b903f4eba14acc0ec6920d, type: 3}
+    - {fileID: 21300000, guid: 72bca1ff81227a342b713b539a0afb95, type: 3}
+    Ears:
+    - {fileID: 21300000, guid: 98b27407203e78e4daa550e5eeb2c778, type: 3}
+  normalMale:
+    CharacterSprites:
+      _serializedList:
+      - Key: {fileID: 21300000, guid: 940f9802b8e60c24c943e3be4a30c33a, type: 3}
+        Value: {fileID: 21300000, guid: fc9480330ea5fbe40aeee15b9df38ab1, type: 3}
+      - Key: {fileID: 21300000, guid: f6fc65307fc908140a176a7d2fb5a053, type: 3}
+        Value: {fileID: 21300000, guid: 6fafb4149f553754bba270852f181001, type: 3}
+      - Key: {fileID: 21300000, guid: fab435417bb7b8d45bb85a9d7707d57a, type: 3}
+        Value: {fileID: 21300000, guid: a22a9b1cfec692646beb5361f2b96615, type: 3}
+    Masks:
+    - {fileID: 21300000, guid: 13d36a82bc2fe264dae9898764bc3f1a, type: 3}
+    - {fileID: 21300000, guid: 85ce3141135a2bc4bb1cac3d21c3b938, type: 3}
+    - {fileID: 21300000, guid: 046aed935c7c21744bf6b5e93ec5c3bf, type: 3}
+    - {fileID: 21300000, guid: d3df27c38ee66c440863976f11346456, type: 3}
+    - {fileID: 21300000, guid: f25a61363f209ab4cbdd8e93341165ae, type: 3}
+    - {fileID: 21300000, guid: d40efd3171f4f854dbd6a24d0aeb6197, type: 3}
+    Ears:
+    - {fileID: 21300000, guid: a8c0c5fefc9052e46becd0041cdb01f6, type: 3}
+  anomoly:
+    AnomolySprite: {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
+    EarFemaleSprite: {fileID: 21300000, guid: ce64cefc488b4fd49b9e0c5e266589bf, type: 3}
+    MaskFemaleSprite:
+    - {fileID: 21300000, guid: e2652543a8d5038409116fb7af8e0c98, type: 3}
+    - {fileID: 21300000, guid: f52a42ed6fdb4844290d2fa051418c6b, type: 3}
+    - {fileID: 21300000, guid: 0d5761da8e9413d4f83fac68ba4aca2d, type: 3}
+    - {fileID: 21300000, guid: 40da4ea9502d8f54588dd21e0158133d, type: 3}
+    - {fileID: 21300000, guid: 632140eb8e5022348925953d97b37937, type: 3}
+    - {fileID: 21300000, guid: 9e3781a66e3977a458476aa1de99f982, type: 3}
+    RibbonFemaleSprite: {fileID: 21300000, guid: 75a59b87ff2bb904c9970c8af63a1c69, type: 3}
+    TailFemale: {fileID: 21300000, guid: 499ad80a186d53b4ca1b7caf3e431dce, type: 3}
+    FlameFemaleSprite: {fileID: 21300000, guid: af77aa9d3ba897742ac351b0f9d3da40, type: 3}
+    EarMaleSprite: {fileID: 21300000, guid: b59eaee5e3723684096946a5a8b9ef6c, type: 3}
+    MaskMaleSprite:
+    - {fileID: 21300000, guid: 946939c615e557e42b2ddb871fe94756, type: 3}
+    - {fileID: 21300000, guid: 75c38c82eee175d4a9ef6d5a2cebb1a8, type: 3}
+    - {fileID: 21300000, guid: c001e4fad90157c448f159746937b123, type: 3}
+    - {fileID: 21300000, guid: d1fe2b90c3af1d742997d41cc88635b2, type: 3}
+    RibbonMaleSprite: {fileID: 21300000, guid: 3cdb5cdd13ae3ef4d89a1f9ec341678f, type: 3}
+    TailMale: {fileID: 21300000, guid: 57afdf7edb951df459e153fafb92166a, type: 3}
+    FlameMaleSprite: {fileID: 21300000, guid: 227258964afa1124daad33da6dcfa8bb, type: 3}
