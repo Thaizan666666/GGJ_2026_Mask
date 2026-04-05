@@ -48,25 +48,35 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d40efd3171f4f854dbd6a24d0aeb6197, type: 3}
     Ears:
     - {fileID: 21300000, guid: a8c0c5fefc9052e46becd0041cdb01f6, type: 3}
-  anomoly:
-    AnomolySprite: {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
-    EarFemaleSprite: {fileID: 21300000, guid: ce64cefc488b4fd49b9e0c5e266589bf, type: 3}
-    MaskFemaleSprite:
-    - {fileID: 21300000, guid: e2652543a8d5038409116fb7af8e0c98, type: 3}
+  AnomolySprite:
+  - {fileID: 21300000, guid: 6b210ea4b1a2f4e4e8b77822264fc492, type: 3}
+  anomolyFemaleAccessory:
+    Masks:
     - {fileID: 21300000, guid: f52a42ed6fdb4844290d2fa051418c6b, type: 3}
-    - {fileID: 21300000, guid: 0d5761da8e9413d4f83fac68ba4aca2d, type: 3}
+    - {fileID: 21300000, guid: e2652543a8d5038409116fb7af8e0c98, type: 3}
     - {fileID: 21300000, guid: 40da4ea9502d8f54588dd21e0158133d, type: 3}
+    - {fileID: 21300000, guid: 0d5761da8e9413d4f83fac68ba4aca2d, type: 3}
     - {fileID: 21300000, guid: 632140eb8e5022348925953d97b37937, type: 3}
     - {fileID: 21300000, guid: 9e3781a66e3977a458476aa1de99f982, type: 3}
-    RibbonFemaleSprite: {fileID: 21300000, guid: 75a59b87ff2bb904c9970c8af63a1c69, type: 3}
-    TailFemale: {fileID: 21300000, guid: 499ad80a186d53b4ca1b7caf3e431dce, type: 3}
-    FlameFemaleSprite: {fileID: 21300000, guid: af77aa9d3ba897742ac351b0f9d3da40, type: 3}
-    EarMaleSprite: {fileID: 21300000, guid: b59eaee5e3723684096946a5a8b9ef6c, type: 3}
-    MaskMaleSprite:
+    Ears:
+    - {fileID: 21300000, guid: ce64cefc488b4fd49b9e0c5e266589bf, type: 3}
+    Ribbons:
+    - {fileID: 21300000, guid: 75a59b87ff2bb904c9970c8af63a1c69, type: 3}
+    Tails:
+    - {fileID: 21300000, guid: 499ad80a186d53b4ca1b7caf3e431dce, type: 3}
+    Flames:
+    - {fileID: 21300000, guid: af77aa9d3ba897742ac351b0f9d3da40, type: 3}
+  anomolyMaleAccessory:
+    Masks:
     - {fileID: 21300000, guid: 946939c615e557e42b2ddb871fe94756, type: 3}
     - {fileID: 21300000, guid: 75c38c82eee175d4a9ef6d5a2cebb1a8, type: 3}
     - {fileID: 21300000, guid: c001e4fad90157c448f159746937b123, type: 3}
     - {fileID: 21300000, guid: d1fe2b90c3af1d742997d41cc88635b2, type: 3}
-    RibbonMaleSprite: {fileID: 21300000, guid: 3cdb5cdd13ae3ef4d89a1f9ec341678f, type: 3}
-    TailMale: {fileID: 21300000, guid: 57afdf7edb951df459e153fafb92166a, type: 3}
-    FlameMaleSprite: {fileID: 21300000, guid: 227258964afa1124daad33da6dcfa8bb, type: 3}
+    Ears:
+    - {fileID: 21300000, guid: b59eaee5e3723684096946a5a8b9ef6c, type: 3}
+    Ribbons:
+    - {fileID: 21300000, guid: 3cdb5cdd13ae3ef4d89a1f9ec341678f, type: 3}
+    Tails:
+    - {fileID: 21300000, guid: 57afdf7edb951df459e153fafb92166a, type: 3}
+    Flames:
+    - {fileID: 21300000, guid: af77aa9d3ba897742ac351b0f9d3da40, type: 3}

@@ -56,7 +56,12 @@ public class NewCharacterMaker : MonoBehaviour
         // Apply the base human look first, then layer the anomaly accessory on top
         NormalCharacter normalCharacter = PickGenderedNormalCharacter(isFemale);
         ApplyNormalCharacter(normalCharacter);
-        ApplyAnomolyAccessory(isFemale);
+
+        // Pick the gendered accessory bag from the SO
+        AnomolyAccessory anomolyAccessory = isFemale
+            ? characterSetup.anomolyFemaleAccessory
+            : characterSetup.anomolyMaleAccessory;
+        ApplyAnomolyAccessory(anomolyAccessory);
     }
 
     [ContextMenu("Switch To Wet Sprite")]
@@ -87,9 +92,9 @@ public class NewCharacterMaker : MonoBehaviour
                 break;
 
             case E_CharacterType.Anamoly:
-                // Anomaly characters transform fully — clear all accessories and show the anomaly sprite
+                // Anomaly characters transform fully — clear all accessories and show a random anomaly sprite
                 ResetCharacterSprites();
-                CharacterSprite.sprite = characterSetup.anomoly.AnomolySprite;
+                CharacterSprite.sprite = characterSetup.AnomolySprite.RandomValue();
                 break;
         }
     }
@@ -103,6 +108,7 @@ public class NewCharacterMaker : MonoBehaviour
         CharacterSprite.sprite = null;
         MaskSprite.sprite = null;
         AccesorySprite.sprite = null;
+        AccesorySprite.sortingOrder = 2; // Reset sorting order in case it was changed by an anomaly accessory
         TailSprite.sprite = null;
         FlameSprite.sprite = null;
     }
@@ -154,47 +160,44 @@ public class NewCharacterMaker : MonoBehaviour
     }
 
     /// <summary>
-    /// Picks a random anomaly accessory and applies the gender-correct sprite for it.
+    /// Picks a random anomaly accessory from the gendered AnomolyAccessory bag and applies it.
     /// The anomaly layer always wins — it clears the conflicting normal slot before applying.
-    /// Ear/Ribbon use AccesorySprite and clear MaskSprite.
+    /// Ear/Ribbon/Tail use AccesorySprite or TailSprite and clear MaskSprite where needed.
     /// Mask uses MaskSprite and clears AccesorySprite.
     /// Flame uses its own renderer, no conflict.
     /// </summary>
-    private void ApplyAnomolyAccessory(bool isFemale)
+    private void ApplyAnomolyAccessory(AnomolyAccessory accessory)
     {
-        AnomolyCharacter anomoly = characterSetup.anomoly;
-
         E_WearingAnomolyAccessory anomolyAccessory = RandomUtil.RandomEnumValue<E_WearingAnomolyAccessory>();
         switch (anomolyAccessory)
         {
-            // Ear replaces whatever was in AccesorySprite, and clears any existing mask
+            // Ear replaces AccesorySprite and clears any existing mask
             case E_WearingAnomolyAccessory.Ear:
                 MaskSprite.sprite = null;
-                AccesorySprite.sprite = isFemale ? anomoly.EarFemaleSprite : anomoly.EarMaleSprite;
+                AccesorySprite.sprite = accessory.Ears.RandomValue();
+                AccesorySprite.sortingOrder = -1; // Ensure ears render above masks since they share the same slot   
                 break;
 
-            // Mask replaces whatever was in MaskSprite, and clears any existing ear/accessory
+            // Mask replaces MaskSprite and clears any existing ear/accessory
             case E_WearingAnomolyAccessory.Mask:
                 AccesorySprite.sprite = null;
-                MaskSprite.sprite = isFemale
-                    ? anomoly.MaskFemaleSprite.RandomValue()
-                    : anomoly.MaskMaleSprite.RandomValue();
+                MaskSprite.sprite = accessory.Masks.RandomValue();
                 break;
 
-            // Ribbon replaces whatever was in AccesorySprite, and clears any existing mask
+            // Ribbon replaces AccesorySprite and clears any existing mask
             case E_WearingAnomolyAccessory.Ribbon:
                 MaskSprite.sprite = null;
-                AccesorySprite.sprite = isFemale ? anomoly.RibbonFemaleSprite : anomoly.RibbonMaleSprite;
+                AccesorySprite.sprite = accessory.Ribbons.RandomValue();
                 break;
 
             // Flame is on its own renderer — no conflict with Mask or AccesorySprite
             case E_WearingAnomolyAccessory.Flame:
-                FlameSprite.sprite = isFemale ? anomoly.FlameFemaleSprite : anomoly.FlameMaleSprite;
+                FlameSprite.sprite = accessory.Flames.RandomValue();
                 break;
 
             // Tail is on its own renderer — no conflict with Mask or AccesorySprite
             case E_WearingAnomolyAccessory.Tail:
-                TailSprite.sprite = isFemale ? anomoly.TailFemale : anomoly.TailMale;
+                TailSprite.sprite = accessory.Tails.RandomValue();
                 break;
         }
     }
@@ -203,7 +206,6 @@ public class NewCharacterMaker : MonoBehaviour
 
     private enum E_WearingNormalAccessory
     {
-        None,
         Mask,
         Ear,
     }

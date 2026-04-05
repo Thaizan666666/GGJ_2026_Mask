@@ -11,7 +11,9 @@ public class SO_CharacterSetup : ScriptableObject
     public NormalCharacter normalMale;
     [Space(10)]
     [Header("Anomoly Character")]
-    public AnomolyCharacter anomoly;  
+    public List<Sprite> AnomolySprite;
+    public AnomolyAccessory anomolyFemaleAccessory;
+    public AnomolyAccessory anomolyMaleAccessory;
 
 }
 
@@ -24,20 +26,11 @@ public struct NormalCharacter {
 }
 
 [System.Serializable]
-public struct AnomolyCharacter {
-    public Sprite AnomolySprite;
-    [Space]
-    [Header("Female")]
-    public Sprite EarFemaleSprite;
-    public List<Sprite> MaskFemaleSprite;
-    public Sprite RibbonFemaleSprite;
-    public Sprite TailFemale;
-    public Sprite FlameFemaleSprite;
-
-    [Header("Male")]
-    public Sprite EarMaleSprite;
-    public List<Sprite> MaskMaleSprite;   
-    public Sprite RibbonMaleSprite;
-    public Sprite TailMale;
-    public Sprite FlameMaleSprite;
+public struct AnomolyAccessory {
+    public List<Sprite> Masks;
+    public List<Sprite> Ears;
+    public List<Sprite> Ribbons;
+    public List<Sprite> Tails;
+    public List<Sprite> Flames;
 }
+

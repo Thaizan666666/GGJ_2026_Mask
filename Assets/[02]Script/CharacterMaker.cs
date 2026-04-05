@@ -10,7 +10,7 @@ public class CharacterMaker : MonoBehaviour
     public SpriteRenderer SpriteRenderer_Flame;
     public SpriteRenderer SpriteRenderer_Tail;
 
-    public enum Gender
+    enum Gender
     {
         None,
         Male,
@@ -72,7 +72,7 @@ public class CharacterMaker : MonoBehaviour
     }
 
     // Enum to identify each anomaly part slot
-    private enum AnomalyPart
+    enum AnomalyPart
     {
         Mask,
         FoxEar,

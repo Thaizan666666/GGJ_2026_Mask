@@ -11,6 +11,7 @@ public class Random_Charecter : MonoBehaviour
         int enumCount = System.Enum.GetValues(typeof(E_CharacterType)).Length;
         e_Charecter = (E_CharacterType)Random.Range(0, enumCount);
     }
+
     public void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space))
